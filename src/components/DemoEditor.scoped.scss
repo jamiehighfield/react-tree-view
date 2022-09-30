@@ -1,0 +1,39 @@
+.checkbox-inline {
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    vertical-align: middle;
+    font-weight: normal;
+    cursor: pointer;
+    width: 100%;
+}
+.px {
+    position: absolute !important;
+    left: -1000000px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: left;
+    line-height: normal;
+}
+.px+.lbl {
+    position: relative;
+    padding-left: 8px;
+    display: inline-block;
+}
+.px+.lbl:before {
+    border-radius: 2px;
+    margin: 2px 3px -3px -20px !important;
+    content: "";
+    opacity: 1;
+    border: 1px solid #bbb;
+    background: #fff;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+    cursor: pointer;
+}

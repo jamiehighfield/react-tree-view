@@ -1,0 +1,33 @@
+.view-port {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+
+    .splitter {
+        display: flex;
+        width: 16px;
+        height: 100vh;
+        cursor: w-resize;
+
+        .splitter-line {
+            width: 8px;
+            height: 100vh;
+            border-right: 1px solid rgb(243, 243, 243);
+        }
+    }
+
+    .navigation {
+        width: 300px;
+        height: 100vh;
+    }
+
+    .tree-view {
+        width: 450px;
+        height: 100vh;
+    }
+
+    .editor {
+        width: 375px;
+        height: 100vh;
+    }
+}

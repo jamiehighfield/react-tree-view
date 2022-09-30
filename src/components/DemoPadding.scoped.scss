@@ -1,0 +1,13 @@
+.padding-editor {
+    display: flex;
+    display: flex;
+    justify-content: space-evenly;
+
+    input[type=number] {
+        margin-right: 5px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

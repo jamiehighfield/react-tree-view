@@ -1,0 +1,19 @@
+.test {
+    font-size: 100px;
+}
+.tree-view {
+    display: inline-block;
+    width: 100%;
+}
+.classic-border {
+    box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+}
+.chevron:after {
+    content: ' ';
+    display: inline-block;
+    border-bottom: 1px solid #f00;
+    border-right: 1px solid #f00;
+    height: 10px;
+    width: 10px;
+    transform: rotate(-45deg);
+}
