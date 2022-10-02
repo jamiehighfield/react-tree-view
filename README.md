@@ -10,7 +10,7 @@ Package information
 
 ### License
 
-React TreeView is licensed under the MIT license. Any derivatives of SharpVNC Core requires that that derivative be licensed under the GNU General Public License (version 3), meaning that the source must be publicly available. If you require different licensing that the MIT license does not provide for, please contact [jamie@dev.contact](mailto:jamie@dev.contact).
+React TreeView is licensed under the MIT license. If you require different licensing that the MIT license does not provide for, please contact [jamie@dev.contact](mailto:jamie@dev.contact).
 
 ### Feature Development
 
