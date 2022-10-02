@@ -3,9 +3,6 @@
 
 name: React TreeView CICD
 
-env:
-  CI: ""
-
 on:
   push:
     branches: [ "master" ]
