@@ -373,9 +373,9 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
         return (
             <div className={ this.removeWhiteSpace(`node-chevron`) }>
                                 
-                <div className={ this.removeWhiteSpace(`outer-node-chevron-body`) }>
+                <div className={ this.removeWhiteSpace(`outer-node-chevron-body`) } onClick={async(e) => this.handleNodeExpand(e, this.getNodeInformation())}>
 
-                    <div className={ this.removeWhiteSpace(`inner-node-chevron-body`) } onClick={async(e) => this.handleNodeExpand(e, this.getNodeInformation())}>
+                    <div className={ this.removeWhiteSpace(`inner-node-chevron-body`) }>
                         <div className={ this.removeWhiteSpace(`chevron`) }></div>
                     </div>
 

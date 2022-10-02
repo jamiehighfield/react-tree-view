@@ -65,6 +65,12 @@ div {
                     padding: 12px;
                     padding-right: 8px;
 
+                    &:hover > .inner-node-chevron-body .chevron {
+                        &:before, &::after {
+                            background-color: #1d89cf;
+                        }
+                    }
+
                     .inner-node-chevron-body {
                         display: flex;
                         justify-content: center;
