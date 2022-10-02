@@ -1,6 +1,6 @@
 React TreeView is a **ReactJS** & **TypeScript** implementation of a tree-view like component, for displaying interactive **nested data**. The component is **fully customisable**, **easy-to-use** & as **extensible** as desired from the ground up, depending on the use cases required.
 
-![Build Passing](https://img.shields.io/badge/build-passing-brightgreen)
+![Build status](https://github.com/jamiehighfield/react-tree-view/actions/workflows/node.js.yml/badge.svg)
 
 ## Packages
 
