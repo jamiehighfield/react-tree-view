@@ -34,6 +34,13 @@ export class DemoTreeView extends React.Component<IDemoTreeViewComponentProps, I
                 autoCheck={this.props.demoConfiguration.autoCheck}
 
                 data={this.props.demoConfiguration.data}
+
+				onBeforeNodeExpand={async (e) => {
+					if (e.node.additionalData.loaded == undefined || e.node.additionalData.loaded == false) {
+						await new Promise(resolve => setTimeout(resolve, 1000));
+						e.node.additionalData.loaded = true;
+					}
+				}}
             >
 
 <TreeView.Image>

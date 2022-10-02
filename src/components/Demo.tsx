@@ -151,7 +151,7 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                         }
                     },
                     state: {
-                        isExpanded: false,
+                        isExpanded: true,
                         isExpanding: false,
                         isChecked: false,
                         isSelected: false,
@@ -331,7 +331,7 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                                         }
                                     },
                                     state: {
-                                        isExpanded: false,
+                                        isExpanded: true,
                                         isExpanding: false,
                                         isChecked: false,
                                         isSelected: false,
@@ -350,7 +350,7 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                                         }
                                     },
                                     state: {
-                                        isExpanded: false,
+                                        isExpanded: true,
                                         isExpanding: false,
                                         isChecked: false,
                                         isSelected: false,

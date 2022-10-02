@@ -645,7 +645,8 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
         return (<div><React.Fragment>
             { nodeContents }
             <div className={ `node-children ${this.props.gridLines ? 'grid-lines' : ''}` } style={{
-                marginLeft: this.props.level == 0 ? 15 : this.props.indent
+                marginLeft: this.props.level == 0 ? 15 : this.props.indent,
+                display: this.props.parentExpanded ? 'block' : 'none'
             }}>
                 { children }
             </div>

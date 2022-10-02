@@ -469,8 +469,8 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     showImages: data[6].state.isChecked,
                     showChevrons: data[7].state.isChecked,
                     showActions: data[8].state.isChecked,
+                    gridLines: data[9].state.isChecked,
                     indent: this.state.indent,
-                    gridLines: data[10].state.isChecked,
 
                     useWaitCursor: data[7].state.isChecked,
                     nonSelectable: data[8].state.isChecked,
