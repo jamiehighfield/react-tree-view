@@ -48,8 +48,8 @@ The following properties are available to be applied to the `<TreeView>` compone
 
 React TreeView was created by:
 
-<a href="https://github.com/jamiehighfield/jamiehighfield/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=jamiehighfield/jamiehighfield" />
+<a href="https://github.com/jamiehighfield/react-tree-view/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jamiehighfield/react-tree-view" />
 </a>
 
 
