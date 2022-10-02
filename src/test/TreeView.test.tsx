@@ -1,8 +1,8 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import React from "react";
-import { ITreeNodeInformation } from "../data/ITreeNodeInformation";
-import { FullRowSelectionModes } from "../rendering/LayoutOptions";
-import TreeView from "../components/TreeView";
+import { ITreeNodeInformation } from "../main/data/ITreeNodeInformation";
+import { FullRowSelectionModes } from "../main/rendering/LayoutOptions";
+import TreeView from "../main/components/TreeView";
 
 const testData: ITreeNodeInformation[] = [
     {

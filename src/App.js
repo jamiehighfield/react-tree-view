@@ -1,15 +1,15 @@
 import './App.css';
-import TreeView from './components/TreeView.tsx';
-import { Padding } from './Utilities/Padding.ts';
-import { LayoutOptions, FullRowSelectionModes } from './rendering/LayoutOptions.ts';
-import { Radius } from './Utilities/Radius.ts';
+import TreeView from './main/components/TreeView.tsx';
+import { Padding } from './main/Utilities/Padding.ts';
+import { LayoutOptions, FullRowSelectionModes } from './main/rendering/LayoutOptions.ts';
+import { Radius } from './main/Utilities/Radius.ts';
 import { useState } from 'react';
-import { ClickBehavior } from './components/ITreeViewProps.ts';
-import DemoEditor from './components/DemoEditor.tsx';
-import { TreeNodeInformation } from './helpers/TreeNodeInformation';
+import { ClickBehavior } from './main/components/ITreeViewProps.ts';
+import DemoEditor from './main/components/DemoEditor.tsx';
+import { TreeNodeInformation } from './main/helpers/TreeNodeInformation';
 import { JsonViewer } from '@textea/json-viewer'
-import DemoNavigation from './components/DemoNavigation';
-import { Demo } from './components/Demo';
+import DemoNavigation from './main/components/DemoNavigation';
+import { Demo } from './main/components/Demo';
 
 const labels = ["First", "Second", "Third"];
 
