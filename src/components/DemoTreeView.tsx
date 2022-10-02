@@ -44,12 +44,12 @@ export class DemoTreeView extends React.Component<IDemoTreeViewComponentProps, I
 							{ data.state.isExpanding &&
 								<div className={'loader'}></div>
 							}
-							{/* { !data.state.isExpanding &&
-								// <img className={'rounded'} style={{
-								// 	width: '32px',
-								// 	height: '32px'
-								// }} src={data.node.additionalData.imageUrl}></img>
-							} */}
+							{ !data.state.isExpanding &&
+								<img className={'rounded'} style={{
+									width: '32px',
+									height: '32px'
+								}} src={data.node.additionalData.imageUrl}></img>
+							}
 						</div>
 						}
 					</TreeView.Image>
@@ -58,12 +58,12 @@ export class DemoTreeView extends React.Component<IDemoTreeViewComponentProps, I
 						<div style={{ display: 'flex', flexDirection: 'column' }}>
 							<div style={{ display: 'flex', flex: 1 }}>
 									<span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                                        Hello
+                                        { data.node.additionalData.text }
 									</span>
 							</div>
 							<div style={{ display: 'flex', flex: 1 }}>
 								<span style={{ color: 'rgb(126, 126, 126)', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                                    Hello second
+                                        { data.node.additionalData.emailAddress }
 								</span>                        
 							</div>
 						</div>

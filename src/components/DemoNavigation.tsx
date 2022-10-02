@@ -131,7 +131,6 @@ export class DemoNavigation extends React.Component {
 							</div>
 							<div style={{ display: 'flex', flex: 1 }}>
 								<span style={{ color: 'rgb(126, 126, 126)', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-									{ data.state.isSelected && <span>test</span> }
 									{ data.node.additionalData.emailAddress }
 								</span>                        
 							</div>

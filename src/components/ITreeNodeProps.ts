@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { ITreeNodeData } from "../data/ITreeNodeData";
-import { ITreeNodeInformation, TreeNodeTypes } from "../data/ITreeNodeInformation";
+import { ITreeNodeInformation } from "../data/ITreeNodeInformation";
 import { TreeNodeInformation } from "../helpers/TreeNodeInformation";
 import { IRenderer } from "../rendering/IRenderer";
 import { FullRowSelectionModes, LayoutOptions } from "../rendering/LayoutOptions";
@@ -13,27 +13,27 @@ import TreeView from "./TreeView";
 export interface ITreeNodeProps {
 
     // Appearance
-    elementOuterPadding: Padding;
-    elementInnerPadding: Padding;
-    imagePadding: Padding;
-    textPadding: Padding;
-    borderRadius: Radius;
-    fullRowSelectionMode: FullRowSelectionModes;
-    showCheckBoxes: boolean;
-    showImages: boolean;
-    showChevrons: boolean;
-    showActions: boolean;
-    indent: number;
-    gridLines: boolean;
+    elementOuterPadding?: Padding;
+    elementInnerPadding?: Padding;
+    imagePadding?: Padding;
+    textPadding?: Padding;
+    borderRadius?: Radius;
+    fullRowSelectionMode?: FullRowSelectionModes;
+    showCheckBoxes?: boolean;
+    showImages?: boolean;
+    showChevrons?: boolean;
+    showActions?: boolean;
+    indent?: number;
+    gridLines?: boolean;
 
     // Behavior
-    useWaitCursor: boolean;
-    nonSelectable: boolean;
-    clickBehavior: ClickBehavior,
-    uniqueSelection: boolean;
-    autoHideActions: boolean;
-    showActionsOnNodeHover: boolean;
-    autoCheck: boolean;
+    useWaitCursor?: boolean;
+    nonSelectable?: boolean;
+    clickBehavior?: ClickBehavior,
+    uniqueSelection?: boolean;
+    autoHideActions?: boolean;
+    showActionsOnNodeHover?: boolean;
+    autoCheck?: boolean;
 
 
 
@@ -45,15 +45,12 @@ export interface ITreeNodeProps {
 
 
 
-    renderer: IRenderer,
     
-    // Item styling
-    layoutOptions: LayoutOptions,
 
-    level: number,
+    level?: number,
     
-    onBeforeNodeExpand: BeforeNodeExpandDelegate,
-    onAfterNodeExpanded: AfterNodeExpandedDelegate,
+    onBeforeNodeExpand?: BeforeNodeExpandDelegate,
+    onAfterNodeExpanded?: AfterNodeExpandedDelegate,
     children: ReactNode,
 
     id: number;
@@ -62,15 +59,15 @@ export interface ITreeNodeProps {
     data: ITreeNodeInformation;
 
     // Chevrons
-    showShevrons: boolean;
-    chevronsOutsideNode: boolean;
+    showShevrons?: boolean;
+    chevronsOutsideNode?: boolean;
 
     // Check boxes
-    checkOnClick: boolean;
+    checkOnClick?: boolean;
     checkBoxesOutsideNode: boolean;
     isChecked: boolean;
-    isIndeterminate: boolean;
-    onCheckChanged: CheckChangedDelegate;
+    isIndeterminate?: boolean;
+    onCheckChanged?: CheckChangedDelegate;
 
 
     // Callbacks

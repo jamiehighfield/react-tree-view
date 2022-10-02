@@ -12,46 +12,46 @@ import { Radius } from "../Utilities/Radius";
 export interface ITreeViewProps {
 
     // Appearance
-    elementOuterPadding: Padding;
-    elementInnerPadding: Padding;
-    imagePadding: Padding;
-    textPadding: Padding;
-    borderRadius: Radius;
-    fullRowSelectionMode: FullRowSelectionModes;
-    showCheckBoxes: boolean;
-    showImages: boolean;
-    showChevrons: boolean;
-    showActions: boolean;
-    indent: number;
-    gridLines: boolean;
+    elementOuterPadding?: Padding;
+    elementInnerPadding?: Padding;
+    imagePadding?: Padding;
+    textPadding?: Padding;
+    borderRadius?: Radius;
+    fullRowSelectionMode?: FullRowSelectionModes;
+    showCheckBoxes?: boolean;
+    showImages?: boolean;
+    showChevrons?: boolean;
+    showActions?: boolean;
+    indent?: number;
+    gridLines?: boolean;
 
     // Behavior
-    useWaitCursor: boolean;
-    nonSelectable: boolean;
-    clickBehavior: ClickBehavior,
-    uniqueSelection: boolean;
-    autoHideActions: boolean;
-    showActionsOnNodeHover: boolean;
-    autoCheck: boolean;
+    useWaitCursor?: boolean;
+    nonSelectable?: boolean;
+    clickBehavior?: ClickBehavior,
+    uniqueSelection?: boolean;
+    autoHideActions?: boolean;
+    showActionsOnNodeHover?: boolean;
+    autoCheck?: boolean;
 
     // Data
     data: ITreeNodeInformation[];
 
     // Events
-    onDataChange: DataChangeDelegate;
-    onBeforeNodeExpand: BeforeNodeExpandDelegate;
-    onAfterNodeExpanded: AfterNodeExpandedDelegate;
+    onDataChange?: DataChangeDelegate;
+    onBeforeNodeExpand?: BeforeNodeExpandDelegate;
+    onAfterNodeExpanded?: AfterNodeExpandedDelegate;
 
 
 
 
     // Other...
 
-    children: ReactNode,
+    children?: ReactNode,
 
 
     // Behavior
-    forcedSelection: boolean;
+    forcedSelection?: boolean;
 
 }
 

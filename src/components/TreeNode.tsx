@@ -4,7 +4,7 @@ import { FullRowSelectionModes } from "../rendering/LayoutOptions";
 import { ITreeNodeProps } from "./ITreeNodeProps";
 import { ITreeNodeComponentState } from "./ITreeNodeComponentState";
 import { ClickBehavior } from "./ITreeViewProps";
-import { ITreeNodeInformation, TreeNodeTypes } from "../data/ITreeNodeInformation";
+import { ITreeNodeInformation } from "../data/ITreeNodeInformation";
 import './TreeNode.scoped.scss'
 import TreeView from "./TreeView";
 
@@ -24,7 +24,8 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
             isSelected: false,
             selectedChildren: [],
             disabled: false,
-            showChevrons: this.props.showChevrons
+            showChevrons: this.props.showChevrons,
+            isExpanded: this.props.data.state.isExpanded
         };
 
         // this.handleCheckChanged = this.handleCheckChanged.bind(this);
@@ -43,11 +44,11 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
     }
 
     isSelected(): boolean {
-        for (let node of this.props.treeView.state.selectedChildren) {
-            if (node == this.props.data) {
-                return true;
-            }
-        }
+        // for (let node of this.props.treeView.state.selectedChildren) {
+        //     if (node == this.props.data) {
+        //         return true;
+        //     }
+        // }
         return false;
     }
 
@@ -61,7 +62,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                 });
                 this.props.onSelectionChanged(this.getNodeInformation());
                 if (this.props.treeView.props.onDataChange != null) {
-                    this.props.treeView.props.onDataChange();
+                    this.props.treeView.props.onDataChange(this.props.treeView.props.data);
                 }
             }
             if ((this.props.clickBehavior & ClickBehavior.Check) != 0) {
@@ -102,7 +103,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                     };
                 });
                 if (this.props.treeView.props.onDataChange != null) {
-                    this.props.treeView.props.onDataChange();
+                    this.props.treeView.props.onDataChange(this.props.treeView.props.data);
                 }
             }
             else {
@@ -111,7 +112,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                     isExpanding: true
                 });
                 if (this.props.treeView.props.onDataChange != null) {
-                    this.props.treeView.props.onDataChange();
+                    this.props.treeView.props.onDataChange(this.props.treeView.props.data);
                 }
 
                 if (this.props.onBeforeNodeExpand != null) {
@@ -122,7 +123,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                     isExpanding: false
                 });
                 if (this.props.treeView.props.onDataChange != null) {
-                    this.props.treeView.props.onDataChange();
+                    this.props.treeView.props.onDataChange(this.props.treeView.props.data);
                 }
 
                 if (!this.props.autoCheck && this.state.isChecked) {
@@ -142,7 +143,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                     };
                 });
                 if (this.props.treeView.props.onDataChange != null) {
-                    this.props.treeView.props.onDataChange();
+                    this.props.treeView.props.onDataChange(this.props.treeView.props.data);
                 }
 
                 if (!this.state.isExpanded) {
@@ -215,16 +216,16 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
         else {
         }
         if (this.props.treeView.props.onDataChange != null) {
-            this.props.treeView.props.onDataChange();
+            this.props.treeView.props.onDataChange(this.props.treeView.props.data);
         }
         this.forceUpdate();
     }
 
     
 
-    static Image = () => null;
-    static Content = () => null;
-    static Actions = () => null;
+    static Image = (props: any) => null;
+    static Content = (props: any) => null;
+    static Actions = (props: any) => null;
 
 
 
@@ -644,7 +645,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
         return (<div><React.Fragment>
             { nodeContents }
             <div className={ `node-children ${this.props.gridLines ? 'grid-lines' : ''}` } style={{
-                marginLeft: this.props.indent //this.props.level == 0 ? 0 : 20
+                marginLeft: this.props.level == 0 ? 15 : this.props.indent
             }}>
                 { children }
             </div>

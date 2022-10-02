@@ -118,9 +118,9 @@ class TreeView extends React.Component<ITreeViewProps, ITreeViewComponentState> 
 
 
 
-    static Image = () => null;
-    static Content = () => null;
-    static Actions = () => null;
+    static Image = (props: any) => null;
+    static Content = (props: any) => null;
+    static Actions = (props: any) => null;
 
 
     render() {
@@ -146,16 +146,12 @@ class TreeView extends React.Component<ITreeViewProps, ITreeViewComponentState> 
 
                 treeView={this}
                 node={node}
-                renderer={this.props.renderer}
-                layoutOptions={this.props.layoutOptions}
                 level={0}
                 onBeforeNodeExpand={this.props.onBeforeNodeExpand}
                 onAfterNodeExpanded={this.props.onAfterNodeExpanded}
 
                 id={1}
                 data={child}
-
-                checkOnClick={this.props.checkOnClick}
                 
                 
                 clickBehavior={this.props.clickBehavior}

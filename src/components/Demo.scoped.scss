@@ -1,33 +1,183 @@
+
+.editor-mobile-navigation {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    left: 0;
+    bottom: 0;
+    border-top: 1px solid rgb(235, 235, 235);
+    background-color: rgb(250, 250, 250);
+    justify-content: center;
+
+    .icon {
+        display: flex;
+        width: 75px;
+        padding-top: 5px;
+        margin-right: 15px;
+        justify-content: center;
+        align-items: center;
+        color: rgb(126, 126, 126);
+        flex-direction: column;
+
+        &:last-child {
+            margin-right: 0;
+        }
+        
+        &.selected {
+            color: #1d89cf
+        }
+
+        i {
+            padding-bottom: 3px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 12px;
+        }
+    }
+}
+
 .view-port {
     display: flex;
     width: 100vw;
     height: 100vh;
+    flex-direction: column;
 
     .splitter {
         display: flex;
         width: 16px;
-        height: 100vh;
         cursor: w-resize;
 
         .splitter-line {
             width: 8px;
-            height: 100vh;
             border-right: 1px solid rgb(243, 243, 243);
         }
     }
+    
+    .editor-navigation {
+        width: calc(100vw - 40px);
+        min-height: 28px;
+        flex-shrink: 0;
+        border-bottom: 1px solid rgb(243, 243, 243);
+        padding: 20px;
 
-    .navigation {
-        width: 300px;
-        height: 100vh;
-    }
-
-    .tree-view {
-        width: 450px;
-        height: 100vh;
+        h1 {
+            margin-top: 0;
+            font-size: 22px;
+        }
     }
 
     .editor {
-        width: 375px;
-        height: 100vh;
+        display: flex;
+        width: 100vw;
+        overflow: auto;
+
+        .navigation {
+            width: 300px;
+            max-height: 100%;
+        }
+
+        .tree-view {
+            width: 450px;
+            max-height: 100%;
+        }
+
+        .appearance {
+            width: 375px;
+            max-height: 100%;
+        }
+
+        .json-viewer {
+            min-width: 400px;
+            max-height: 100%;
+            flex: 1;
+            overflow: auto;
+            margin-left: 20px;
+            transition: color 0.3s linear;
+            color: rgba(255, 255, 255, 0);
+
+            &:hover {
+                color: rgb(188, 192, 196);
+                transition: initial;
+            }
+
+            &::-webkit-scrollbar {
+                width: 14px;
+                appearance: none;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                box-shadow: inset 0 0 0 20px;
+                border-left: 4px solid rgba(0, 0, 0, 0);
+                border-right: 4px solid rgba(0, 0, 0, 0);
+                border-top: 4px solid rgba(0, 0, 0, 0);
+                border-bottom: 4px solid rgba(0, 0, 0, 0);
+                background-clip: padding-box;
+                border-radius: 9999px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    .view-port {
+        height: calc(100vh - 60px);
+
+        .editor-navigation h1 {
+            font-size: 18px;
+        }
+
+        .editor {
+
+            .splitter {
+                display: none;
+            }
+
+            .navigation {
+                display: none;
+                width: initial;
+                flex-grow: 1;
+            }
+
+            .tree-view {
+                display: none;
+                width: initial;
+                flex-grow: 1;
+            }
+
+            .appearance {
+                display: none;
+                width: initial;
+                flex-grow: 1;
+            }
+
+            .json-viewer {
+                display: none;
+                width: initial;
+                flex-grow: 1;
+            }            
+
+            &.sel-page-0 > .navigation {
+                display: flex;
+            }
+
+            &.sel-page-1 > .tree-view {
+                display: flex;
+            }
+
+            &.sel-page-2 > .appearance {
+                display: flex;
+            }
+
+            &.sel-page-3 > .json-viewer {
+                display: flex;
+            }
+        }
+    }
+
+    .editor-mobile-navigation {
+        display: flex;
     }
 }

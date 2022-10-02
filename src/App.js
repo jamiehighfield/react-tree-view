@@ -35,7 +35,8 @@ function App() {
 			isExpanding: false,
 			isChecked: false,
 			isSelected: false,
-			isEnabled: false
+			isEnabled: false,
+isIndeterminate: false,
 		},
 		children: [],
 		properties: {
@@ -58,7 +59,8 @@ function App() {
 			isExpanding: false,
 			isChecked: false,
 			isSelected: false,
-			isEnabled: false
+			isEnabled: false,
+isIndeterminate: false
 		},
 		children: [{
 			id: 2,
@@ -74,7 +76,8 @@ function App() {
 				isExpanding: false,
 				isChecked: false,
 				isSelected: false,
-				isEnabled: false
+				isEnabled: false,
+isIndeterminate: false
 			},
 			children: [{
 				id: 3,
@@ -90,7 +93,8 @@ function App() {
 					isExpanding: false,
 					isChecked: false,
 					isSelected: false,
-					isEnabled: false
+					isEnabled: false,
+isIndeterminate: false
 				},
 				children: []
 			},
@@ -108,7 +112,8 @@ function App() {
 					isExpanding: false,
 					isChecked: false,
 					isSelected: false,
-					isEnabled: false
+					isEnabled: false,
+isIndeterminate: false
 				},
 				children: []
 			}]
@@ -127,7 +132,8 @@ function App() {
 				isExpanding: false,
 				isChecked: false,
 				isSelected: false,
-				isEnabled: false
+				isEnabled: false,
+isIndeterminate: false
 			},
 			children: []
 		}
