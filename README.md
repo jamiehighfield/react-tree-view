@@ -2,6 +2,8 @@ React TreeView is a **ReactJS** & **TypeScript** implementation of a tree-view l
 
 ![Build status](https://github.com/jamiehighfield/react-tree-view/actions/workflows/node.js.yml/badge.svg)
 
+View the [Live Demo](https://highfield.dev) of the library.
+
 ## Packages
 
 Package information
