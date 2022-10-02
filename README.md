@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+React TreeView is a **ReactJS** & **TypeScript** implementation of a tree-view like component, for displaying interactive **nested data**. The component is **fully customisable**, **easy-to-use** & as **extensible** as desired from the ground up, depending on the use cases required.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Build Passing](https://img.shields.io/badge/build-passing-brightgreen)
 
-## Available Scripts
+## Packages
 
-In the project directory, you can run:
+Package information
 
-### `npm start`
+### License
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+React TreeView is licensed under the MIT license. Any derivatives of SharpVNC Core requires that that derivative be licensed under the GNU General Public License (version 3), meaning that the source must be publicly available. If you require different licensing that the MIT license does not provide for, please contact [jamie@dev.contact](mailto:jamie@dev.contact).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Feature Development
 
-### `npm test`
+Future development and roadmap
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+### Props
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The following properties are available to be applied to the `<TreeView>` component:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Prop                     | Description                                                                                                  | Type                    | Required | Accepted Values                                                                                                                  |
+|--------------------------|--------------------------------------------------------------------------------------------------------------|-------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------|
+| `elementOuterPadding`    | The outer padding (margin) of each `<TreeNode>` component.                                                   | `Padding`               | false    | e.g. `{   top: 0,   left: 0,   bottom: 0,   right: 0 }`                                                                          |
+| `elementInnerPadding`    | The inner padding (padding) of each `<TreeNode>` component.                                                  | `Padding`               | false    | e.g. `{   top: 0,   left: 0,   bottom: 0,   right: 0 }`                                                                          |
+| `imagePadding`           | The padding of the image in each `<TreeNode>` component.                                                     | `Padding`               | false    | e.g. `{   top: 0,   left: 0,   bottom: 0,   right: 0 }`                                                                          |
+| `textPadding`            | The padding of the text in each `<TreeNode>` component.                                                      | `Padding`               | false    | e.g. `{   top: 0,   left: 0,   bottom: 0,   right: 0 }`                                                                          |
+| `borderRadius`           | The radius of the border of each `<TreeNode>` component.                                                     | `Radius`                | false    | e.g. `{   topLeft: 0,   topRight: 0,   bottomLeft: 0,   bottomRight: 0 }`                                                        |
+| `fullRowSelectionMode`   | Whether or not the full row of each `<TreeNode>` component is highlighted.                                   | `FullRowSelectionModes` | false    | `FullRowSelectionModes.Content` or `FullRowSelectionModes.Level` or `FullRowSelectionModes.Full`                                 |
+| `showCheckBoxes`         | Whether or not check boxes are shown in each `<TreeNode>` component.                                         | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `showImages`             | Whether or not images are shown in each `<TreeNode>` component.                                              | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `showChevrons`           | Whether or not chevrons are shown in each `<TreeNode>` component.                                            | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `showActions`            | Whether or not actions are shown in each `<TreeNode>` component.                                             | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `indent`                 | The indent of `<TreeNode>` components at each level of the tree.                                             | `integer`               | false    | an `integer` value between `25` & `50` (inclusive)                                                                               |
+| `gridLines`              | Whether or not grid lines are shown.                                                                         | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `useWaitCursor`          | Whether or not a wait cursor is shown when `<TreeNode>` components are expanding.                            | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `nonSelectable`          | Whether or not `<TreeNode>` components can be selected.                                                      | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `clickBehavior`          | The behaviour when clicking a `<TreeNode>` component.                                                        | `ClickBehavior`         | false    | `ClickBehavior.None` or `ClickBehavior.Select` or `ClickBehavior.Check` or `ClickBehavior.Expand` or `ClickBehavior.SelectCheck` |
+| `uniqueSelection`        | Whether or not only one `<TreeNode>` component can be selected at once.                                      | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `autoHideActions`        | Whether or not actions are auto-hidden until hovered by the pointer.                                         | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `showActionsOnNodeHover` | Whether or not actions can be shown by hovering the `<TreeNode>` component instead of just the actions area. | `boolean`               | false    | `true` or `false`                                                                                                                |
+| `autoCheck`              | Whether or not child `<TreeNode>` components are checked when their parent is checked.                       | `boolean`               | false    | `true` or `false`                                                                                                                |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Author, Contributors & Contributing
 
-### `npm run eject`
+React TreeView was created by:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<a href="https://github.com/jamiehighfield/jamiehighfield/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jamiehighfield/jamiehighfield" />
+</a>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If you wish to contribute to this project, please see [contributing.md](contributing.md). For more information, please contact [jamie@dev.contact](mailto:jamie@dev.contact).
