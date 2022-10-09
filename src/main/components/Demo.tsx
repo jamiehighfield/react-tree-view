@@ -420,7 +420,7 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                         <h1>
                             Alpha Build - ReactJS Nested List & Tree View Demo
                         </h1>
-                        <a href="https://github.com/jamiehighfield/react-tree-view"><img src="https://github.com/jamiehighfield/react-tree-view/actions/workflows/node.js.yml/badge.svg"></img></a>
+                        <a href="https://github.com/jamiehighfield/react-tree-view" aria-label={'GitHub Project Build Status'}><img src="https://github.com/jamiehighfield/react-tree-view/actions/workflows/node.js.yml/badge.svg" alt={'GitHub Project Build Status'}></img></a>
                     </div>
 
                     <div className={ `editor ${this.state.selectedPage == 0 ? ' sel-page-0' : ''} ${this.state.selectedPage == 1 ? ' sel-page-1' : ''} ${this.state.selectedPage == 2 ? ' sel-page-2' : ''} ${this.state.selectedPage == 3 ? ' sel-page-3' : ''}` }>
