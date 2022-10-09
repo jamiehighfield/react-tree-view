@@ -67,7 +67,7 @@ export class HighlightDemo implements IDemo {
                         additionalData: {
                             text: 'John Smith',
                             emailAddress: 'john.smith@test.com',
-                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-2.jpg'
+                            imageUrl: 'https://highfield.dev/team/team-2.jpg'
                         }
                     },
                     state: {
@@ -87,7 +87,7 @@ export class HighlightDemo implements IDemo {
                         additionalData: {
                             text: 'John Smith',
                             emailAddress: 'john.smith@test.com',
-                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-2.jpg'
+                            imageUrl: 'https://highfield.dev/team/team-2.jpg'
                         }
                     },
                     state: {
@@ -105,7 +105,7 @@ export class HighlightDemo implements IDemo {
                             additionalData: {
                                 text: 'Jane Joe',
                                 emailAddress: 'jane.doe@test.com',
-                                imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-3.jpg'
+                                imageUrl: 'https://highfield.dev/team/team-3.jpg'
                             }
                         },
                         state: {
@@ -123,7 +123,7 @@ export class HighlightDemo implements IDemo {
                                 additionalData: {
                                     text: 'Grace Charles',
                                     emailAddress: 'grace.charles@test.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-4.jpg'
+                                    imageUrl: 'https://highfield.dev/team/team-4.jpg'
                                 }
                             },
                             state: {
@@ -143,7 +143,7 @@ export class HighlightDemo implements IDemo {
                                 additionalData: {
                                     text: 'Lucy Green',
                                     emailAddress: 'lucy.green@test.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-5.jpg'
+                                    imageUrl: 'https://highfield.dev/team/team-5.jpg'
                                 }
                             },
                             state: {
