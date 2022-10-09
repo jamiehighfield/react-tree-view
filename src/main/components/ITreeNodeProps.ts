@@ -7,7 +7,7 @@ import { FullRowSelectionModes, LayoutOptions } from "../rendering/LayoutOptions
 import { Padding } from "../Utilities/Padding";
 import { Radius } from "../Utilities/Radius";
 import { AfterNodeExpandedDelegate, BeforeNodeExpandDelegate } from "./ITreeNodeComponentState";
-import { ClickBehavior, SelectionBehavior } from "./ITreeViewProps";
+import { ClickBehavior, NodeSelectDelegate, SelectionBehavior } from "./ITreeViewProps";
 import TreeView from "./TreeView";
 
 export interface ITreeNodeProps {
@@ -25,6 +25,7 @@ export interface ITreeNodeProps {
     showActions?: boolean;
     indent?: number;
     gridLines?: boolean;
+    overlay?: boolean;
 
     // Behavior
     useWaitCursor?: boolean;
@@ -34,6 +35,7 @@ export interface ITreeNodeProps {
     autoHideActions?: boolean;
     showActionsOnNodeHover?: boolean;
     autoCheck?: boolean;
+    disableDeselection?: boolean;
 
 
 
@@ -50,7 +52,11 @@ export interface ITreeNodeProps {
     level?: number,
     
     onBeforeNodeExpand?: BeforeNodeExpandDelegate,
-    onAfterNodeExpanded?: AfterNodeExpandedDelegate,
+    onAfterNodeExpand?: AfterNodeExpandedDelegate,
+    onBeforeNodeSelect?: NodeSelectDelegate;
+    onAfterNodeSelect?: NodeSelectDelegate;
+
+    
     children: ReactNode,
 
     id: number;

@@ -1,9 +1,25 @@
 .test {
     font-size: 100px;
 }
+.tree-viewc {
+    background-color: var(--color-background);
+    // border: 1px solid var(--color-grid-lines);
+    // border-radius: 5px;
+    // margin: 5px;
+    overflow: auto;
+
+    &.overlay {
+        background-color: rgb(0, 0, 0, 0.3);
+    }
+
+    &.overflow-overlay {
+        overflow: overlay;
+    }
+}
 .tree-view {
     display: inline-block;
     width: 100%;
+    background-color: var(--color-background);
 }
 .classic-border {
     box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;

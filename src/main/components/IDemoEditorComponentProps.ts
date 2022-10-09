@@ -1,7 +1,7 @@
 import { IDemoConfiguration } from "../helpers/demo/IDemoConfiguration";
 
 export interface IDemoEditorComponentProps {
-    demoConfiguration: IDemoConfiguration;
+    demoConfiguration: IDemoConfiguration | null | undefined;
     onUpdate: EditorUpdatedDelegate;
 }
 

@@ -5,4 +5,6 @@ export interface ITreeNodeState {
     isIndeterminate: boolean;
     isSelected: boolean;
     isEnabled: boolean;
+    isOverlaid: boolean;
+    isHidden?: boolean;
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { ITreeNodeInformation } from "../data/ITreeNodeInformation";
 import { IDemoTreeViewComponentProps } from "./IDemoTreeViewComponentProps";
 import { IDemoTreeViewComponentState } from "./IDemoTreeViewComponentState";
 import TreeView from "./TreeView";
@@ -6,91 +7,112 @@ import TreeView from "./TreeView";
 export class DemoTreeView extends React.Component<IDemoTreeViewComponentProps, IDemoTreeViewComponentState> {
     constructor(props: IDemoTreeViewComponentProps) {
         super(props);
+
+		this.state = {
+			demoConfiguration: this.props.demoConfiguration
+		};
     }
 
+	/* Handles the component updating via props. */
+	componentDidUpdate(prevProps: Readonly<IDemoTreeViewComponentProps>, prevState: Readonly<IDemoTreeViewComponentState>, snapshot?: any): void {
+		if (this.props.demoConfiguration != prevState.demoConfiguration) {
+			this.setState({
+				demoConfiguration: this.props.demoConfiguration
+			});
+		}
+	}
+
+	/* Handles the before node expand event. */
+	async handleBeforeNodeExpand(nodeInformation: ITreeNodeInformation): Promise<any> {
+		if (this.state.demoConfiguration?.onBeforeNodeExpand != null) {
+			await this.state.demoConfiguration.onBeforeNodeExpand(nodeInformation);
+		}
+	}
+
+	/* Handles the after node expand event. */
+	async handleAfterNodeExpand(nodeInformation: ITreeNodeInformation): Promise<any> {
+		if (this.state.demoConfiguration?.onAfterNodeExpand != null) {
+			await this.state.demoConfiguration.onAfterNodeExpand(nodeInformation);
+		}
+	}
+
+	/* Handles the before node select event. */
+	async handleBeforeNodeSelect(nodeInformation: ITreeNodeInformation): Promise<any> {
+		if (this.state.demoConfiguration?.onBeforeNodeSelect != null) {
+			await this.state.demoConfiguration.onBeforeNodeSelect(nodeInformation);
+		}
+	}
+
+	/* Handles the after node select event. */
+	async handleAfterNodeSelect(nodeInformation: ITreeNodeInformation): Promise<any> {
+		if (this.state.demoConfiguration?.onAfterNodeSelect != null) {
+			await this.state.demoConfiguration.onAfterNodeSelect(nodeInformation);
+		}
+	}
+
+	/* Main render method. */
     render() {
 
         return (
-            <TreeView
-                elementOuterPadding={this.props.demoConfiguration.elementOuterPadding}
-                elementInnerPadding={this.props.demoConfiguration.elementInnerPadding}
-                imagePadding={this.props.demoConfiguration.imagePadding}
-                textPadding={this.props.demoConfiguration.textPadding}
-                borderRadius={this.props.demoConfiguration.borderRadius}
-                fullRowSelectionMode={this.props.demoConfiguration.fullRowSelectionMode}
-                showCheckBoxes={this.props.demoConfiguration.showCheckBoxes}
-                showImages={this.props.demoConfiguration.showImages}
-                showChevrons={this.props.demoConfiguration.showChevrons}
-                showActions={this.props.demoConfiguration.showActions}
-                indent={this.props.demoConfiguration.indent}
-                gridLines={this.props.demoConfiguration.gridLines}
+			<>
+            	{ this.props.demoConfiguration != null && (
+				
+				<TreeView
+					// Appearance
+					elementOuterPadding={this.state.demoConfiguration?.elementOuterPadding}
+					elementInnerPadding={this.state.demoConfiguration?.elementInnerPadding}
+					imagePadding={this.state.demoConfiguration?.imagePadding}
+					textPadding={this.state.demoConfiguration?.textPadding}
+					borderRadius={this.state.demoConfiguration?.borderRadius}
+					fullRowSelectionMode={this.state.demoConfiguration?.fullRowSelectionMode}
+					showCheckBoxes={this.state.demoConfiguration?.showCheckBoxes}
+					showImages={this.state.demoConfiguration?.showImages}
+					showChevrons={this.state.demoConfiguration?.showChevrons}
+					showActions={this.state.demoConfiguration?.showActions}
+					indent={this.state.demoConfiguration?.indent}
+					gridLines={this.state.demoConfiguration?.gridLines}
+					overlay={this.state.demoConfiguration?.overlay}
+					overlayScrollBar={false}
+					dragSelection={true}
 
-                useWaitCursor={this.props.demoConfiguration.useWaitCursor}
-                nonSelectable={this.props.demoConfiguration.nonSelectable}
-                clickBehavior={this.props.demoConfiguration.clickBehavior}
-                uniqueSelection={this.props.demoConfiguration.uniqueSelection}
-                autoHideActions={this.props.demoConfiguration.autoHideActions}
-                showActionsOnNodeHover={this.props.demoConfiguration.showActionsOnNodeHover}
-                autoCheck={this.props.demoConfiguration.autoCheck}
+					// Behavior
+					useWaitCursor={this.state.demoConfiguration?.useWaitCursor}
+					nonSelectable={this.state.demoConfiguration?.nonSelectable}
+					clickBehavior={this.state.demoConfiguration?.clickBehavior}
+					uniqueSelection={this.state.demoConfiguration?.uniqueSelection}
+					autoHideActions={this.state.demoConfiguration?.autoHideActions}
+					showActionsOnNodeHover={this.state.demoConfiguration?.showActionsOnNodeHover}
+					autoCheck={this.state.demoConfiguration?.autoCheck}
 
-                data={this.props.demoConfiguration.data}
+					// Data
+					data={this.state.demoConfiguration?.data}
 
-				onBeforeNodeExpand={async (e) => {
-					if (e.node.additionalData.loaded == undefined || e.node.additionalData.loaded == false) {
-						await new Promise(resolve => setTimeout(resolve, 1000));
-						e.node.additionalData.loaded = true;
-					}
-				}}
-            >
+					// Events
+					onBeforeNodeExpand={async (nodeInformation) => await this.handleBeforeNodeExpand(nodeInformation)}
+					onAfterNodeExpand={async (nodeInformation) => await this.handleAfterNodeExpand(nodeInformation)}
+					onBeforeNodeSelect={async (nodeInformation) => await this.handleBeforeNodeSelect(nodeInformation)}
+					onAfterNodeSelect={async (nodeInformation) => await this.handleAfterNodeSelect(nodeInformation)}>
 
-<TreeView.Image>
-						{(data) =>
-						<div className={'node-image rounded blank'} style={{
-							width: '32px'
-						}}>
-							{ data.state.isExpanding &&
-								<div className={'loader'}></div>
-							}
-							{ !data.state.isExpanding &&
-								<img className={'rounded'} style={{
-									width: '32px',
-									height: '32px'
-								}} src={data.node.additionalData.imageUrl}></img>
-							}
-						</div>
+					<TreeView.Image>
+						{
+							this.state.demoConfiguration?.imageElement
 						}
 					</TreeView.Image>
 					<TreeView.Content>
-						{(data) =>
-						<div style={{ display: 'flex', flexDirection: 'column' }}>
-							<div style={{ display: 'flex', flex: 1 }}>
-									<span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                                        { data.node.additionalData.text }
-									</span>
-							</div>
-							<div style={{ display: 'flex', flex: 1 }}>
-								<span style={{ color: 'rgb(126, 126, 126)', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                                        { data.node.additionalData.emailAddress }
-								</span>                        
-							</div>
-						</div>
+						{
+							this.state.demoConfiguration?.contentElement
 						}
 					</TreeView.Content>
 					<TreeView.Actions>
-						{(data) =>
-						<div>
-							<div className={'node-action'} onClick={() => {
-								alert(data.node.additionalData.text);
-							}}>
-								<i className={'fa fa-trash'} aria-hidden="true"></i>
-							</div>
-							<div className={'node-action'}>
-								<i className={'fa fa-bath'} aria-hidden="true"></i>
-							</div>
-						</div> }
+						{
+							this.state.demoConfiguration?.actionsElement
+						}
 					</TreeView.Actions>
 
-            </TreeView>
+            	</TreeView>
+				
+				)}
+			</>
         );
     }
 }

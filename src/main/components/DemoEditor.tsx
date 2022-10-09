@@ -15,10 +15,24 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
         super(props);
 
         this.state = {
-            demoConfiguration: Demo.copyDemoConfiguration(this.props.demoConfiguration),
+            demoConfiguration: this.props.demoConfiguration,
             indent: this.props.demoConfiguration.indent
         };
 
+        this.updateData();
+    }
+
+    componentDidUpdate(prevProps: Readonly<IDemoEditorComponentProps>, prevState: Readonly<IDemoEditorComponentState>, snapshot?: any): void {
+        if (this.props.demoConfiguration != prevState.demoConfiguration) {
+            this.setState({
+                demoConfiguration: this.props.demoConfiguration
+            }, () => {
+                this.updateData();
+            });
+        }
+    }
+
+    updateData(): void {
         this.data = [
             {
                 id: 0,
@@ -36,11 +50,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     hideCheckBox: true,
                     nonInteractive: true
@@ -61,11 +76,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     hideCheckBox: true
                 }
@@ -85,11 +101,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     hideCheckBox: true
                 }
@@ -109,11 +126,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     hideCheckBox: true
                 }
@@ -133,11 +151,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     hideCheckBox: true
                 }
@@ -156,11 +175,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.showCheckBoxes,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -179,11 +199,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.showImages,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -202,11 +223,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.showChevrons,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -225,11 +247,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.showActions,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -248,11 +271,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.gridLines,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -280,14 +304,39 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true,
                     hideCheckBox: true
+                }
+            },
+            {
+                id: 1,
+                node: {
+                    additionalData: {
+                        text: 'Show Overlay',
+                        emailAddress: 'Whether or not the tree view is overlaid to highlight specified items.'
+                    }
+                },
+                state: {
+                    isExpanded: false,
+                    isExpanding: false,
+                    isChecked: this.state.demoConfiguration.overlay,
+                    isSelected: false,
+                    isEnabled: false,
+                    isIndeterminate: false,
+                    isOverlaid: false
+                },
+                children: [],
+                properties: {
+                    hideChevronContainer: true,
+                    hideImage: true,
+                    nonSelectable: true
                 }
             },
             {
@@ -306,11 +355,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     hideCheckBox: true,
                     nonInteractive: true
@@ -330,11 +380,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.useWaitCursor,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -353,11 +404,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.nonSelectable,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -376,11 +428,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.uniqueSelection,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -399,11 +452,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.autoHideActions,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -422,11 +476,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -445,11 +500,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     isChecked: this.state.demoConfiguration.autoCheck,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
                 children: [],
                 properties: {
-                    hideChevron: true,
+                    hideChevronContainer: true,
                     hideImage: true,
                     nonSelectable: true
                 }
@@ -471,10 +527,11 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                     showActions: data[8].state.isChecked,
                     gridLines: data[9].state.isChecked,
                     indent: this.state.indent,
+                    overlay: data[11].state.isChecked,
 
                     useWaitCursor: data[7].state.isChecked,
                     nonSelectable: data[8].state.isChecked,
-                    uniqueSelection: data[9].state.isChecked,
+                    uniqueSelection: data[14].state.isChecked,
                     autoHideActions: data[10].state.isChecked,
                     autoCheck: data[11].state.isChecked
                 }
@@ -486,7 +543,8 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
 
     render() {
         return (
-           
+           <>
+           { this.props.demoConfiguration != null && (
             <TreeView
 
             fullRowSelectionMode={FullRowSelectionModes.Level}
@@ -498,6 +556,7 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
 					showActionsOnNodeHover={true}
 					data={this.data}
                     clickBehavior={ClickBehavior.Check}
+                    overlayScrollBar={false}
 
 					elementInnerPadding={{
 						top: 2,
@@ -537,7 +596,7 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                                         
                                     </div>
                                 </div>)}
-                                { data.node.additionalData.showText && (<div>
+                                { data.node.additionalData.showText && (<div style={{color:'var(--color-demo-primary-text)'}}>
                                     { data.node.additionalData.text }
                                 </div>)}
                             </div>
@@ -546,13 +605,12 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                         { !data.node.additionalData.separator && data.node.additionalData.editor == undefined && (
 						<div style={{ display: 'flex', flexDirection: 'column' }}>
 							<div style={{ display: 'flex', flex: 1 }}>
-									<span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+									<span style={{ textOverflow: 'ellipsis', overflow: 'hidden', color:'var(--color-demo-primary-text)' }}>
 											{ data.node.additionalData.text }
 									</span>
 							</div>
 							<div style={{ display: 'flex', flex: 1 }}>
 								<span style={{ color: 'rgb(126, 126, 126)', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-									{ data.state.isSelected && <span>test</span> }
 									{ data.node.additionalData.emailAddress }
 								</span>                        
 							</div>
@@ -561,24 +619,23 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
                         { data.node.additionalData.editor == 'indent' && (
                             <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '33px' }}>
                                 <div style={{ display: 'flex', flex: 1 }}>
-                                        <span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                                        <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', color:'var(--color-demo-primary-text)' }}>
                                                 { data.node.additionalData.text }
                                         </span>
                                 </div>
                                 <div style={{ display: 'flex', flex: 1 }}>
                                     <span style={{ color: 'rgb(126, 126, 126)', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                                        { data.state.isSelected && <span>test</span> }
                                         { data.node.additionalData.emailAddress }
                                     </span>                        
                                 </div>
                                 <div style={{ display: 'flex', flex: 1, marginTop: '10px' }}>
                                     <input style={{ flex: 1 }} type="number" min="25" max="100" value={this.state.indent} onChange={(e) => {
-                                     console.log(e);   data.node.additionalData.onChange(e.target.valueAsNumber);
+                                        data.node.additionalData.onChange(e.target.valueAsNumber);
                                     }} placeholder="Indent"></input>
                                 </div>
 						    </div>)}
                             { data.node.additionalData.editor == 'padding' && (
-                            <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '33px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '33px', color:'var(--color-demo-primary-text)' }}>
                                 <div style={{ display: 'flex', flex: 1 }}>
                                         <span style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
                                                 { data.node.additionalData.text }
@@ -609,18 +666,13 @@ class DemoEditor extends React.Component<IDemoEditorComponentProps, IDemoEditorC
 					</TreeView.Content>
 					<TreeView.Actions>
 						{(data) =>
-						<div>
-							<div className={'node-action'} onClick={() => {
-								alert(data.node.additionalData.text);
-							}}>
-								<i className={'fa fa-trash'} aria-hidden="true"></i>
-							</div>
-							<div className={'node-action'}>
-								<i className={'fa fa-bath'} aria-hidden="true"></i>
-							</div>
-						</div> }
+                        <>
+                        
+                        </>}
 					</TreeView.Actions>
                     </TreeView>
+           )}
+           </>
         );
     }
 }

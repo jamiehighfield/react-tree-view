@@ -30,11 +30,15 @@ export interface ITreeNodeComponentState {
     showImages: boolean
 
     // Behavior
+
+
+    
+    overlay?: boolean;
 }
 
 export interface BeforeNodeExpandDelegate {
-    (nodeInformation: ITreeNodeInformation, selectedNodes: ITreeNodeData[]): Promise<any>
+    (nodeInformation: ITreeNodeInformation): Promise<any>
 }
 export interface AfterNodeExpandedDelegate {
-    (nodeInformation: ITreeNodeInformation, selectedNodes: ITreeNodeData[]): Promise<any>
+    (nodeInformation: ITreeNodeInformation): Promise<any>
 }

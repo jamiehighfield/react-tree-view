@@ -25,7 +25,8 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
             selectedChildren: [],
             disabled: false,
             showChevrons: this.props.showChevrons,
-            isExpanded: this.props.data.state.isExpanded
+            isExpanded: this.props.data.state.isExpanded,
+            overlay: this.props.overlay
         };
 
         // this.handleCheckChanged = this.handleCheckChanged.bind(this);
@@ -56,13 +57,25 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
     async handleNodeClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): Promise<any> {
         if (!this.state.disabled) {
             if ((this.props.clickBehavior & ClickBehavior.Select) != 0 && !this.props.data.properties?.nonInteractive && !this.props.data.properties?.nonSelectable) {
-                this.props.data.state.isSelected = !this.props.data.state.isSelected;
-                this.setState({
-                    isSelected: !this.state.isSelected
-                });
-                this.props.onSelectionChanged(this.getNodeInformation());
-                if (this.props.treeView.props.onDataChange != null) {
-                    this.props.treeView.props.onDataChange(this.props.treeView.props.data);
+                
+                if (this.props.onBeforeNodeSelect != null) {
+                    await this.props.onBeforeNodeSelect(this.getNodeInformation());
+                }
+
+                if (!(this.props.data.state.isSelected && this.props.disableDeselection)) {
+                    this.props.data.state.isSelected = !this.props.data.state.isSelected;
+                    this.setState({
+                        isSelected: !this.state.isSelected
+                    });
+                    this.props.onSelectionChanged(this.getNodeInformation());
+                    
+                    if (this.props.onAfterNodeSelect != null) {
+                        await this.props.onAfterNodeSelect(this.getNodeInformation());
+                    }
+
+                    if (this.props.treeView.props.onDataChange != null) {
+                        this.props.treeView.props.onDataChange(this.props.treeView.props.data);
+                    }
                 }
             }
             if ((this.props.clickBehavior & ClickBehavior.Check) != 0) {
@@ -116,7 +129,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                 }
 
                 if (this.props.onBeforeNodeExpand != null) {
-                    await this.props.onBeforeNodeExpand(nodeInformation, this.props.treeView.state.selectedChildren);
+                    await this.props.onBeforeNodeExpand(nodeInformation);
                 }
                 this.props.data.state.isExpanding = false;
                 this.setState({
@@ -132,8 +145,8 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                     }
                 }
 
-                if (this.props.onAfterNodeExpanded != null) {
-                    await this.props.onAfterNodeExpanded(nodeInformation, this.props.treeView.state.selectedChildren);
+                if (this.props.onAfterNodeExpand != null) {
+                    await this.props.onAfterNodeExpand(nodeInformation);
                 }
                 
                 this.props.data.state.isExpanded = !this.props.data.state.isExpanded;
@@ -172,6 +185,41 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
     }
 
     handleCheckChanged(e: React.ChangeEvent<HTMLInputElement>): void {
+        // let nodeInformation: ITreeNodeInformation = this.getNodeInformation();
+
+        // let check: boolean = !this.state.isChecked;
+
+        // nodeInformation.state.isChecked = check;
+
+        // this.setCheckStateRecursive(nodeInformation, check);
+        
+        // this.setState({
+        //     isChecked: check
+        // }, () => {
+        //     // this.props.onCheckChanged(nodeInformation, check);
+        // });
+
+        // let nodeInformation: ITreeNodeInformation = this.getNodeInformation();
+
+        //         let check: boolean = !this.state.isChecked;
+
+        //         alert(check.toString());
+
+        //         //nodeInformation.state.isChecked = check;
+
+        //         // this.setCheckStateRecursive(nodeInformation, check);
+                
+        //         this.setState({
+        //             isChecked: check
+        //         }, () => {
+        //             // if (this.props.onCheckChanged != null) {
+        //             //     this.props.onCheckChanged(nodeInformation, check);
+        //             // }
+        //             // if (this.props.treeView.props.onDataChange != null) {
+        //             //     this.props.treeView.props.onDataChange(this.props.treeView.props.data);
+        //             // }
+        //         });
+
         let nodeInformation: ITreeNodeInformation = this.getNodeInformation();
 
         let check: boolean = !this.state.isChecked;
@@ -183,8 +231,14 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
         this.setState({
             isChecked: check
         }, () => {
-            this.props.onCheckChanged(nodeInformation, check);
+            if (this.props.onCheckChanged != null) {
+                this.props.onCheckChanged(nodeInformation, check);
+            }
+            if (this.props.treeView.props.onDataChange != null) {
+                this.props.treeView.props.onDataChange(this.props.treeView.props.data);
+            }
         });
+
     }
 
     setCheckStateRecursive(nodeInformation: ITreeNodeInformation, check: boolean): void {
@@ -257,6 +311,16 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                 isChecked: this.props.isChecked
             });
         }
+        if (this.props.data.state.isSelected != prevState.isSelected) {
+            this.setState({
+                isSelected: this.props.data.state.isSelected
+            });
+        }
+        if (prevState.overlay != this.props.overlay) {
+            this.setState({
+                overlay: this.props.overlay
+            });
+        }
         
         // if (prevState.isChecked != this.props.isChecked) {
         //     this.setState({
@@ -305,6 +369,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
             ${this.state.isSelected ? 'selected' : TreeNode.emptyClass}
             ${this.props.data.properties?.nonInteractive ? 'non-interactive' : TreeNode.emptyClass}
             ${this.state.isExpanded ? 'expanded' : TreeNode.emptyClass}
+            ${this.props.showActionsOnNodeHover ? 'actions-partial-auto-hide' : TreeNode.emptyClass}
             `;
         
         return this.removeWhiteSpace(
@@ -372,7 +437,9 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
     private getChevron(): JSX.Element {
         return (
             <div className={ this.removeWhiteSpace(`node-chevron`) }>
-                                
+                
+                { !this.props.data.properties?.hideChevron && (
+                
                 <div className={ this.removeWhiteSpace(`outer-node-chevron-body`) } onClick={async(e) => this.handleNodeExpand(e, this.getNodeInformation())}>
 
                     <div className={ this.removeWhiteSpace(`inner-node-chevron-body`) }>
@@ -380,6 +447,8 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                     </div>
 
                 </div>
+
+                )}
 
             </div>
         );
@@ -413,7 +482,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                     
                         <label className={ this.removeWhiteSpace(`check-box-label`) }>
                             <input type="checkbox" className={ this.removeWhiteSpace(`check-box`) } checked={this.state.isChecked} onChange={this.handleCheckChanged} />
-                            <span></span>
+                            <span onClick={(e) => e.stopPropagation()} ></span>
                         </label>
 
                     </div>
@@ -452,7 +521,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
 
     render() {
         /* Determine if rendering should be attempted */
-        let doRender: boolean = (!this.props.rootNode && this.props.visible);
+        let doRender: boolean = (!this.props.rootNode && this.props.visible && !this.props.data.state.isHidden);
 
         let nodeContents: JSX.Element = (<></>);
         let children: any = [];
@@ -462,105 +531,12 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
             if (!this.props.rootNode) {
 
                 nodeContents = (
-                    // <div className={ 'node-outer-container' }>
-                    //     <div className={ 'node-inner-container' } style={ this.getNodeStyles() }>
-                    //         {/* Chevron */}
-                    //         { this.state.showChevrons && this.props.chevronsOutsideNode &&
-
-                    //         <div className={ this.getChevronContainerClasses() } style={{
-                    //             display: 'inline-flex',
-                    //         }}>
-                    //             <div className={'chevron-hover-container'} onClick={async (e) => this.handleNodeExpandClick(e)}>
-                    //                 <div className={`chevron-container ${this.state.isExpanded ? 'rotated' : TreeNode.emptyClass}`}>
-                    //                     <div className={'chevron right'}></div>
-                    //                 </div>
-                    //             </div>
-                    //         </div>
-
-                    //         }
-
-                    //         {/* Check Boxes */}
-                    //         { this.state.showCheckBoxes && this.props.checkBoxesOutsideNode &&
-                                
-                    //         <div className={'checkbox-container'}>
-                    //             <div style={{display:'flex',alignItems:'center'}}>
-                    //                 <label className={'checkbox-inline'} onClick={this.handleClick} >
-                    //                     <input type="checkbox" className={'px'} checked={this.state.isChecked} onChange={this.handleCheckChanged} />
-                    //                     <span className={'lbl'}></span>
-                    //                 </label>
-                    //             </div>
-                    //         </div>
-                            
-                    //         }
-
-                    //         <div className={ this.getNodeClasses() }>
-                    //             {/* Chevron */}
-                    //             { this.state.showChevrons && !this.props.chevronsOutsideNode &&
-
-                    //             <div className={ this.getChevronContainerClasses() }>
-                    //                 <div className={'chevron-hover-container'} onClick={async (e) => this.handleNodeExpandClick(e)}>
-                    //                     <div className={`chevron-container ${this.state.isExpanded ? 'rotated' : TreeNode.emptyClass}`}>
-                    //                         <div className={'chevron right'}></div>
-                    //                     </div>
-                    //                 </div>
-                    //             </div>
-                                
-                    //             }
-
-                    //             {/* Check Boxes */}
-                    //             { this.state.showCheckBoxes && !this.props.checkBoxesOutsideNode &&
-                                
-                    //             <div className={'checkbox-container'}>
-                    //                 <div style={{display:'flex',alignItems:'center'}}>
-                    //                     <label className={'checkbox-inline'} onClick={this.handleClick} >
-                    //                         <input type="checkbox" className={'px'} checked={this.state.isChecked} onChange={this.handleCheckChanged} />
-                    //                         <span className={'lbl'}></span>
-                    //                     </label>
-                    //                 </div>
-                    //             </div>
-                                
-                    //             }
-
-                    //             {/* Image */}
-                    //             { this.state.showImages && 
-                                
-                    //             <div className={ this.getImageContainerClasses() }>
-                    //                 { this.props.children![0].props.children(this.getNodeInformation()) }
-                    //             </div>
-                                
-                    //             }
-
-
-
-                    //             <div style={{
-                    //                 display: "flex",
-                    //                 whiteSpace: "nowrap",
-                    //                 overflow: "hidden",
-                    //                 textOverflow: "ellipsis",
-                    //                 alignItems: "center",
-                    //                 // flexDirection: "column",
-
-                    //                 paddingTop: this.props.layoutOptions.TextPadding.top,
-                    //                 paddingLeft: this.props.layoutOptions.TextPadding.left,
-                    //                 paddingBottom: this.props.layoutOptions.TextPadding.bottom,
-                    //                 paddingRight: this.props.layoutOptions.TextPadding.right
-                    //             }}>
-                    //                 { this.props.children![1].props.children(this.getNodeInformation()) }
-                    //             </div>
-                    //             { this.props.showActions &&
-                    //             <div className={'actions-container'}>                    
-                    //                 { this.props.children![2].props.children(this.getNodeInformation()) }                    
-                    //             </div> }
-                    //         </div>
-                    //     </div>
-                    // </div>
-                
-                <></>    );
+                <></>);
 
                 if (this.props.parentExpanded) {
                     nodeContents = (
                         // This is the outer most container for a node and represents the full-width of the tree visualViewport.
-                        <div className={ this.removeWhiteSpace(`new-node ${this.getDynamicNodeClasses()}`) }>
+                        <div className={ this.removeWhiteSpace(`new-node dark-mode ${this.getDynamicNodeClasses()}`) }>
                             
                             {/* This is the outer node body for a node. The width of this container is determined by its content
                                 but this container has any margins applied to it to represent tree view depth. */}
@@ -574,13 +550,13 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                                     { this.props.gridLines && 
                                     <div style={{
                                         height: '50%',
-                                        borderBottom: '1px solid rgb(237, 237, 237)'
+                                        borderBottom: '1px solid var(--color-grid-lines)'
                                     }}></div>
                                 }
                                     </div>
                                 }
 
-                                { this.props.showChevrons && !this.props.data.properties?.hideChevron && this.props.chevronsOutsideNode &&
+                                { this.props.showChevrons && !this.props.data.properties?.hideChevronContainer && this.props.chevronsOutsideNode &&
 
                                 this.getChevron()
                                 
@@ -596,7 +572,7 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
                                     when interacted with the pointer (i.e. hover effects). */}
                                 <div className={ this.removeWhiteSpace(`inner-node-body`) } style={ this.getDynamicInnerNodeBodyStyles() }onClick={async (e) => this.handleNodeClick(e)}>
 
-                                    { this.props.showChevrons && !this.props.data.properties?.hideChevron && !this.props.chevronsOutsideNode &&
+                                    { this.props.showChevrons && !this.props.data.properties?.hideChevronContainer && !this.props.chevronsOutsideNode &&
                                     
                                     this.getChevron()
                                     
@@ -634,6 +610,15 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
 
                             </div>
 
+                            { this.state.overlay && !this.props.data.state.isOverlaid &&
+                            
+                            <div className={ this.removeWhiteSpace(`overlay client ${this.props.data.state.isOverlaid ? 'transparent' : ''}`) } style={{
+                                left: this.props.level == 0 ? 0 : '11px',
+                                width: this.props.level == 0 ? '100%' : 'calc(100% - 11px)'
+                            }}></div>
+                            
+                            }
+
                         </div>
                     );
                 }
@@ -642,13 +627,19 @@ class TreeNode extends React.Component<ITreeNodeProps, ITreeNodeComponentState> 
             children = this.getChildrenElements();
         }
         
-        return (<div><React.Fragment>
+        return (<div style={{position:'relative'}}><React.Fragment>
             { nodeContents }
             <div className={ `node-children ${this.props.gridLines ? 'grid-lines' : ''}` } style={{
                 marginLeft: this.props.level == 0 ? 15 : this.props.indent,
-                display: this.props.parentExpanded ? 'block' : 'none'
+                display: this.props.parentExpanded ? 'block' : 'none',
+                position: 'relative'
             }}>
                 { children }
+                { this.state.overlay && this.props.level != 100 && 
+                
+                <div style={{width: (this.props.level == 0 ? this.state.indent + 1 : this.state.indent) + 1, left: (this.props.level == 0 ? '-16px' : '-15px')}} className={`overlay non-client ${this.props.data.state.isOverlaid ? 'transparent' : ''}`}></div>
+                
+                }
             </div>
         </React.Fragment></div>)
     }

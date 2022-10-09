@@ -7,18 +7,24 @@
     left: 0;
     bottom: 0;
     border-top: 1px solid rgb(235, 235, 235);
-    background-color: rgb(250, 250, 250);
+    background-color: #F6F6F6;
+    padding-bottom: 10px;
     justify-content: center;
 
     .icon {
         display: flex;
-        width: 75px;
+        min-width: 55px;
         padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
         margin-right: 15px;
         justify-content: center;
         align-items: center;
         color: rgb(126, 126, 126);
         flex-direction: column;
+        border-radius: 15px;
+        user-select: none;
+        cursor: pointer;
 
         &:last-child {
             margin-right: 0;
@@ -39,11 +45,17 @@
     }
 }
 
+html[data-platform='iPhone'] .view-port > .editor-navigation {
+    background-color: #F6F6F6;
+}
+
 .view-port {
     display: flex;
-    width: 100vw;
+    width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right));
     height: 100vh;
     flex-direction: column;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 
     .splitter {
         display: flex;
@@ -52,39 +64,54 @@
 
         .splitter-line {
             width: 8px;
-            border-right: 1px solid rgb(243, 243, 243);
+            border-right: 1px solid var(--color-demo-divider);
         }
     }
     
     .editor-navigation {
-        width: calc(100vw - 40px);
+        width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 40px);
         min-height: 28px;
         flex-shrink: 0;
-        border-bottom: 1px solid rgb(243, 243, 243);
+        border-bottom: 1px solid var(--color-demo-divider);
         padding: 20px;
 
         h1 {
-            margin-top: 0;
+            margin: 0;
             font-size: 22px;
+            color: var(--color-demo-primary-text);
+        }
+
+        img {
+            margin-top: 15px;
         }
     }
 
     .editor {
         display: flex;
-        width: 100vw;
+        width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
         overflow: auto;
 
+        > .panel {
+            border-right: 1px solid var(--color-demo-divider);
+
+            &:last-of-type {
+                border-right: none;
+            }
+        }
+
         .navigation {
-            width: 300px;
+            width: 350px;
             max-height: 100%;
         }
 
         .tree-view {
+            display: flex;
             width: 450px;
-            max-height: 100%;
+            align-items: stretch;
         }
 
         .appearance {
+            display: flex;
             width: 375px;
             max-height: 100%;
         }
@@ -96,6 +123,7 @@
             overflow: auto;
             margin-left: 20px;
             transition: color 0.3s linear;
+            background-color: #FFFFFF;
             color: rgba(255, 255, 255, 0);
 
             &:hover {
@@ -123,14 +151,20 @@
 
 @media only screen and (max-width: 1250px) {
     .view-port {
-        height: calc(100vh - 60px);
+        height: initial;
+        width: 100%;
 
-        .editor-navigation h1 {
-            font-size: 18px;
+        .editor-navigation {
+            width: calc(100% - 40px);
+
+            h1 {
+                font-size: 18px;
+            }
         }
 
         .editor {
-
+            margin-bottom: 60px;
+            
             .splitter {
                 display: none;
             }

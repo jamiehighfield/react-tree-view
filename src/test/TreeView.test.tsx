@@ -20,7 +20,8 @@ const testData: ITreeNodeInformation[] = [
             isChecked: false,
             isSelected: false,
             isEnabled: false,
-            isIndeterminate: false
+            isIndeterminate: false,
+            isOverlaid: false
         },
         children: []
     }
@@ -39,6 +40,7 @@ indent={20}
 gridLines={true}
 showActionsOnNodeHover={true}
 data={testData}
+overlayScrollBar={false}
 
 >
 

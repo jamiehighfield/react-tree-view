@@ -1,4 +1,5 @@
-import { ClickBehavior } from "../../components/ITreeViewProps";
+import { AfterNodeExpandedDelegate, BeforeNodeExpandDelegate } from "../../components/ITreeNodeComponentState";
+import { ClickBehavior, NodeSelectDelegate } from "../../components/ITreeViewProps";
 import { ITreeNodeInformation } from "../../data/ITreeNodeInformation";
 import { FullRowSelectionModes } from "../../rendering/LayoutOptions";
 import { Padding } from "../../Utilities/Padding";
@@ -6,6 +7,8 @@ import { Radius } from "../../Utilities/Radius";
 
 export interface IDemoConfiguration {
     id: number;
+    name: string;
+    helpContent?: JSX.Element | string | null;
 
     // Appearance
     elementOuterPadding: Padding;
@@ -20,6 +23,7 @@ export interface IDemoConfiguration {
     showActions: boolean;
     indent: number;
     gridLines: boolean;
+    overlay: boolean;
 
     // Behavior
     useWaitCursor: boolean;
@@ -32,4 +36,24 @@ export interface IDemoConfiguration {
 
     // Data
     data: ITreeNodeInformation[];
+
+    // Events
+    onLoadDemo?: LoadDemoDelegate;
+    onBeforeNodeExpand?: BeforeNodeExpandDelegate;
+    onAfterNodeExpand?: AfterNodeExpandedDelegate;
+    onBeforeNodeSelect?: NodeSelectDelegate;
+    onAfterNodeSelect?: NodeSelectDelegate;
+
+    // Children
+    imageElement: DemoElementDelegate;
+    contentElement: DemoElementDelegate;
+    actionsElement: DemoElementDelegate;
+}
+
+export interface LoadDemoDelegate {
+    (): Promise<any>;
+}
+
+export interface DemoElementDelegate {
+    (nodeInformation: ITreeNodeInformation): JSX.Element;
 }

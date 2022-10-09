@@ -1,8 +1,15 @@
 import { JsonViewer } from "@textea/json-viewer";
 import React from "react";
+import { ITreeNodeInformation } from "../data/ITreeNodeInformation";
 import { IDemoConfiguration } from "../helpers/demo/IDemoConfiguration";
+import { Thread } from "../helpers/Thread";
 import { FullRowSelectionModes } from "../rendering/LayoutOptions";
 import './Demo.scoped.scss';
+import { HighlightDemo } from "./demo/demos/HighlightDemo";
+import { IDemo } from "./demo/demos/IDemo";
+import { IDemoNavigationItem } from "./demo/demos/IDemoNavigationItem";
+import { OverviewDemo } from "./demo/demos/OverviewDemo";
+import Modal from "./demo/modal/Modal";
 import DemoEditor from "./DemoEditor";
 import DemoNavigation from "./DemoNavigation";
 import DemoTreeView from "./DemoTreeView";
@@ -15,66 +22,78 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
         super(props);
         
         this.onEditorUpdate = this.onEditorUpdate.bind(this);
+        this.handleInformationActionClick = this.handleInformationActionClick.bind(this);
+        this.handleInformationModalClose = this.handleInformationModalClose.bind(this);
 
-        this.demos = [{
-            id: 0,
+        this.populateDemos();
+        this.configureDemoConfigurations();
 
-            // Appearance
-            elementOuterPadding: {
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0
-            },
-            elementInnerPadding: {
-                top: 8,
-                left: 0,
-                bottom: 8,
-                right: 8
-            },
-            imagePadding: {
-                top: 6,
-                left: 6,
-                bottom: 6,
-                right: 6
-            },
-            textPadding: {
-                top: 6,
-                left: 6,
-                bottom: 6,
-                right: 6
-            },
-            borderRadius: {
-                topLeft: 5,
-                topRight: 5,
-                bottomLeft: 5,
-                bottomRight: 5
-            },
-            fullRowSelectionMode: FullRowSelectionModes.Level,
-            showCheckBoxes: true,
-            showImages: true,
-            showChevrons: true,
-            showActions: true,
-            indent: 25,
-            gridLines: true,
+        this.state = {
+            demoConfiguration: this.demoConfigurations[0],
+            navigationItems: this.getNavigationItems(),
+            selectedPage: 0,
+            informationModalVisible: false,
+            informationModalTitle: "",
+            informationModalHelpContent: <></>
+        };
+    }
 
-            // Behavior
-            useWaitCursor: true,
-            nonSelectable: false,
-            clickBehavior: ClickBehavior.Select,
-            uniqueSelection: true,
-            autoHideActions: true,
-            showActionsOnNodeHover: true,
-            autoCheck: true,
+    private demos: IDemo[];
+    private demoConfigurations: IDemoConfiguration[];
 
-            // Data
-            data: [{
+    /* Populates all demos. */
+    populateDemos(): void {
+        this.demos = [
+            new OverviewDemo(),
+            new HighlightDemo()
+        ]
+    }
+    
+    /* Configures demo configurations. */
+    configureDemoConfigurations(): void {
+        this.demoConfigurations = [];
+
+        for(let demo of this.demos) {
+            this.demoConfigurations.push(demo.getDemoConfiguration());
+        }
+    }
+
+    /* Gets all navigation items. */
+    getNavigationItems(): IDemoNavigationItem[] {
+        return [
+            {
+                id: 0,
+                node: {
+                    additionalData: {
+                        heading: true,
+                        text: 'Choose Demo'
+                    }
+                },
+                state: {
+                    isExpanded: false,
+                    isExpanding: false,
+                    isChecked: false,
+                    isSelected: false,
+                    isEnabled: false,
+                    isIndeterminate: false,
+                    isOverlaid: false
+                },
+                children: [],
+                properties: {
+                    hideChevronContainer: true,
+                    nonInteractive: true
+                }
+            },
+            {
                 id: 1,
                 node: {
                     additionalData: {
-                        text: 'John Smith',
-                        emailAddress: 'john.smith@domain.com',
-                        imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-2.jpg'
+                        text: 'Overview',
+                        description: 'High-level overview of the TreeView.',
+                        demoId: 0,
+                        tags: [
+                            "Demo"
+                        ]
                     }
                 },
                 state: {
@@ -83,32 +102,43 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                     isChecked: false,
                     isSelected: false,
                     isEnabled: false,
-                    isIndeterminate: false
+                    isIndeterminate: false,
+                    isOverlaid: false
                 },
-                children: [{
-                    id: 2,
-                    node: {
-                        additionalData: {
-                            text: 'Jane Joe',
-                            emailAddress: 'jane.doe@domain.com',
-                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-3.jpg'
-                        }
-                    },
-                    state: {
-                        isExpanded: true,
-                        isExpanding: false,
-                        isChecked: false,
-                        isSelected: false,
-                        isEnabled: false,
-                        isIndeterminate: false
-                    },
-                    children: [{
+                children: [],
+                properties: {
+                    hideChevron: true
+                }
+            },
+            {
+                id: 2,
+                node: {
+                    additionalData: {
+                        text: 'Accessibility',
+                        description: 'Demonstration of accessibility features.'
+                    }
+                },
+                state: {
+                    isExpanded: true,
+                    isExpanding: false,
+                    isChecked: false,
+                    isSelected: false,
+                    isEnabled: false,
+                    isIndeterminate: false,
+                    isOverlaid: false
+                },
+                children: [
+                    {
                         id: 3,
                         node: {
                             additionalData: {
-                                text: 'Grace Charles',
-                                emailAddress: 'grace.charles@domain.com',
-                                imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-4.jpg'
+                                text: 'Item Highlighting',
+                                description: 'Draw focus to one or more nodes.',
+                                demoId: 1,
+                                tags: [
+                                    "Demo",
+                                    "Accessibility"
+                                ]
                             }
                         },
                         state: {
@@ -117,17 +147,25 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                             isChecked: false,
                             isSelected: false,
                             isEnabled: false,
-                            isIndeterminate: false
+                            isIndeterminate: false,
+                            isOverlaid: false
                         },
-                        children: []
+                        children: [],
+                        properties: {
+                            hideChevronContainer: true
+                        }
                     },
                     {
                         id: 4,
                         node: {
                             additionalData: {
-                                text: 'Lucy Green',
-                                emailAddress: 'lucy.green@domain.com',
-                                imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-5.jpg'
+                                text: 'High Contrast',
+                                description: 'Demonstrates high contrast colours.',
+                                demoId: 2,
+                                tags: [
+                                    "Demo",
+                                    "Accessibility"
+                                ]
                             }
                         },
                         state: {
@@ -136,91 +174,80 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                             isChecked: false,
                             isSelected: false,
                             isEnabled: false,
-                            isIndeterminate: false
+                            isIndeterminate: false,
+                            isOverlaid: false,
+                            isHidden: true
                         },
-                        children: []
-                    }]
+                        children: [],
+                        properties: {
+                            hideChevronContainer: true
+                        }
+                    }
+                ],
+                properties: {
+                    hideChevronContainer: false,
+                    hideImage: true,
+                    hideCheckBox: true,
+                    nonInteractive: false,
+                    nonSelectable: true
+                }
+            },
+            {
+                id: 5,
+                node: {
+                    additionalData: {
+                        text: 'Other',
+                        description: 'Demonstration of other features.'
+                    }
                 },
-                {
-                    id: 5,
-                    node: {
-                        additionalData: {
-                            text: 'Maddison Perry',
-                            emailAddress: 'maddison.perry@domain.com',
-                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-6.jpg'
+                state: {
+                    isExpanded: true,
+                    isExpanding: false,
+                    isChecked: false,
+                    isSelected: false,
+                    isEnabled: false,
+                    isIndeterminate: false,
+                    isOverlaid: false,
+                    isHidden: true
+                },
+                children: [
+                    {
+                        id: 6,
+                        node: {
+                            additionalData: {
+                                text: 'Drag Selection',
+                                description: 'Draw a selection rectangle using click-and-drag to select one or more nodes.',
+                                demoId: 1,
+                                tags: [
+                                    "Demo",
+                                    "Desktop only"
+                                ]
+                            }
+                        },
+                        state: {
+                            isExpanded: false,
+                            isExpanding: false,
+                            isChecked: false,
+                            isSelected: false,
+                            isEnabled: false,
+                            isIndeterminate: false,
+                            isOverlaid: false
+                        },
+                        children: [],
+                        properties: {
+                            hideChevronContainer: true
                         }
                     },
-                    state: {
-                        isExpanded: true,
-                        isExpanding: false,
-                        isChecked: false,
-                        isSelected: false,
-                        isEnabled: false,
-                        isIndeterminate: false
-                    },
-                    children: [{
-                        id: 2,
-                        node: {
-                            additionalData: {
-                                text: 'Jane Joe',
-                                emailAddress: 'jane.doe@domain.com',
-                                imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-3.jpg'
-                            }
-                        },
-                        state: {
-                            isExpanded: true,
-                            isExpanding: false,
-                            isChecked: false,
-                            isSelected: false,
-                            isEnabled: false,
-                            isIndeterminate: false
-                        },
-                        children: [{
-                            id: 3,
-                            node: {
-                                additionalData: {
-                                    text: 'Grace Charles',
-                                    emailAddress: 'grace.charles@domain.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-4.jpg'
-                                }
-                            },
-                            state: {
-                                isExpanded: false,
-                                isExpanding: false,
-                                isChecked: false,
-                                isSelected: false,
-                                isEnabled: false,
-                                isIndeterminate: false
-                            },
-                            children: []
-                        },
-                        {
-                            id: 4,
-                            node: {
-                                additionalData: {
-                                    text: 'Lucy Green',
-                                    emailAddress: 'lucy.green@domain.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-5.jpg'
-                                }
-                            },
-                            state: {
-                                isExpanded: false,
-                                isExpanding: false,
-                                isChecked: false,
-                                isSelected: false,
-                                isEnabled: false,
-                                isIndeterminate: false
-                            },
-                            children: []
-                        }]
-                    },
                     {
-                        id: 5,
+                        id: 7,
                         node: {
                             additionalData: {
-                                text: 'Maddison Perry',
-                                emailAddress: 'maddison.perry@domain.com',
-                                imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-6.jpg'
+                                text: 'Layout Properties',
+                                description: 'Demonstrates different layout options, such as padding.',
+                                demoId: 2,
+                                tags: [
+                                    "Demo"
+                                ]
                             }
                         },
                         state: {
@@ -229,341 +256,75 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                             isChecked: false,
                             isSelected: false,
                             isEnabled: false,
-                            isIndeterminate: false
+                            isIndeterminate: false,
+                            isOverlaid: false
                         },
-                        children: [{
-                            id: 2,
-                            node: {
-                                additionalData: {
-                                    text: 'Jane Joe',
-                                    emailAddress: 'jane.doe@domain.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-3.jpg'
-                                }
-                            },
-                            state: {
-                                isExpanded: true,
-                                isExpanding: false,
-                                isChecked: false,
-                                isSelected: false,
-                                isEnabled: false,
-                                isIndeterminate: false
-                            },
-                            children: [{
-                                id: 3,
-                                node: {
-                                    additionalData: {
-                                        text: 'Grace Charles',
-                                        emailAddress: 'grace.charles@domain.com',
-                                        imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-4.jpg'
-                                    }
-                                },
-                                state: {
-                                    isExpanded: false,
-                                    isExpanding: false,
-                                    isChecked: false,
-                                    isSelected: false,
-                                    isEnabled: false,
-                                    isIndeterminate: false
-                                },
-                                children: []
-                            },
-                            {
-                                id: 4,
-                                node: {
-                                    additionalData: {
-                                        text: 'Lucy Green',
-                                        emailAddress: 'lucy.green@domain.com',
-                                        imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-5.jpg'
-                                    }
-                                },
-                                state: {
-                                    isExpanded: false,
-                                    isExpanding: false,
-                                    isChecked: false,
-                                    isSelected: false,
-                                    isEnabled: false,
-                                    isIndeterminate: false
-                                },
-                                children: []
-                            }]
-                        },
-                        {
-                            id: 5,
-                            node: {
-                                additionalData: {
-                                    text: 'Maddison Perry',
-                                    emailAddress: 'maddison.perry@domain.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-6.jpg'
-                                }
-                            },
-                            state: {
-                                isExpanded: false,
-                                isExpanding: false,
-                                isChecked: false,
-                                isSelected: false,
-                                isEnabled: false,
-                                isIndeterminate: false
-                            },
-                            children: [{
-                                id: 2,
-                                node: {
-                                    additionalData: {
-                                        text: 'Jane Joe',
-                                        emailAddress: 'jane.doe@domain.com',
-                                        imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-3.jpg'
-                                    }
-                                },
-                                state: {
-                                    isExpanded: true,
-                                    isExpanding: false,
-                                    isChecked: false,
-                                    isSelected: false,
-                                    isEnabled: false,
-                                    isIndeterminate: false
-                                },
-                                children: [{
-                                    id: 3,
-                                    node: {
-                                        additionalData: {
-                                            text: 'Grace Charles',
-                                            emailAddress: 'grace.charles@domain.com',
-                                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-4.jpg'
-                                        }
-                                    },
-                                    state: {
-                                        isExpanded: true,
-                                        isExpanding: false,
-                                        isChecked: false,
-                                        isSelected: false,
-                                        isEnabled: false,
-                                        isIndeterminate: false
-                                    },
-                                    children: []
-                                },
-                                {
-                                    id: 4,
-                                    node: {
-                                        additionalData: {
-                                            text: 'Lucy Green',
-                                            emailAddress: 'lucy.green@domain.com',
-                                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-5.jpg'
-                                        }
-                                    },
-                                    state: {
-                                        isExpanded: true,
-                                        isExpanding: false,
-                                        isChecked: false,
-                                        isSelected: false,
-                                        isEnabled: false,
-                                        isIndeterminate: false
-                                    },
-                                    children: []
-                                }]
-                            },
-                            {
-                                id: 5,
-                                node: {
-                                    additionalData: {
-                                        text: 'Maddison Perry',
-                                        emailAddress: 'maddison.perry@domain.com',
-                                        imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-6.jpg'
-                                    }
-                                },
-                                state: {
-                                    isExpanded: false,
-                                    isExpanding: false,
-                                    isChecked: false,
-                                    isSelected: false,
-                                    isEnabled: false,
-                                    isIndeterminate: false
-                                },
-                                children: [
-                                    
-                                ]
-                            }]
-                        }]
-                    },
-                    {
-                        id: 2,
-                        node: {
-                            additionalData: {
-                                text: 'Jane Joe',
-                                emailAddress: 'jane.doe@domain.com',
-                                imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-3.jpg'
-                            }
-                        },
-                        state: {
-                            isExpanded: true,
-                            isExpanding: false,
-                            isChecked: false,
-                            isSelected: false,
-                            isEnabled: false,
-                            isIndeterminate: false
-                        },
-                        children: [{
-                            id: 3,
-                            node: {
-                                additionalData: {
-                                    text: 'Grace Charles',
-                                    emailAddress: 'grace.charles@domain.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-4.jpg'
-                                }
-                            },
-                            state: {
-                                isExpanded: false,
-                                isExpanding: false,
-                                isChecked: false,
-                                isSelected: false,
-                                isEnabled: false,
-                                isIndeterminate: false
-                            },
-                            children: [{
-                                id: 2,
-                                node: {
-                                    additionalData: {
-                                        text: 'Jane Joe',
-                                        emailAddress: 'jane.doe@domain.com',
-                                        imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-3.jpg'
-                                    }
-                                },
-                                state: {
-                                    isExpanded: true,
-                                    isExpanding: false,
-                                    isChecked: false,
-                                    isSelected: false,
-                                    isEnabled: false,
-                                    isIndeterminate: false
-                                },
-                                children: [{
-                                    id: 3,
-                                    node: {
-                                        additionalData: {
-                                            text: 'Grace Charles',
-                                            emailAddress: 'grace.charles@domain.com',
-                                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-4.jpg'
-                                        }
-                                    },
-                                    state: {
-                                        isExpanded: false,
-                                        isExpanding: false,
-                                        isChecked: false,
-                                        isSelected: false,
-                                        isEnabled: false,
-                                        isIndeterminate: false
-                                    },
-                                    children: []
-                                },
-                                {
-                                    id: 4,
-                                    node: {
-                                        additionalData: {
-                                            text: 'Lucy Green',
-                                            emailAddress: 'lucy.green@domain.com',
-                                            imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-5.jpg'
-                                        }
-                                    },
-                                    state: {
-                                        isExpanded: false,
-                                        isExpanding: false,
-                                        isChecked: false,
-                                        isSelected: false,
-                                        isEnabled: false,
-                                        isIndeterminate: false
-                                    },
-                                    children: []
-                                }]
-                            },
-                            {
-                                id: 5,
-                                node: {
-                                    additionalData: {
-                                        text: 'Maddison Perry',
-                                        emailAddress: 'maddison.perry@domain.com',
-                                        imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-6.jpg'
-                                    }
-                                },
-                                state: {
-                                    isExpanded: false,
-                                    isExpanding: false,
-                                    isChecked: false,
-                                    isSelected: false,
-                                    isEnabled: false,
-                                    isIndeterminate: false
-                                },
-                                children: [
-                                    
-                                ]
-                            }]
-                        },
-                        {
-                            id: 4,
-                            node: {
-                                additionalData: {
-                                    text: 'Lucy Green',
-                                    emailAddress: 'lucy.green@domain.com',
-                                    imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-5.jpg'
-                                }
-                            },
-                            state: {
-                                isExpanded: false,
-                                isExpanding: false,
-                                isChecked: false,
-                                isSelected: false,
-                                isEnabled: false,
-                                isIndeterminate: false
-                            },
-                            children: []
-                        }]
-                    },
-                    {
-                        id: 5,
-                        node: {
-                            additionalData: {
-                                text: 'Maddison Perry',
-                                emailAddress: 'maddison.perry@domain.com',
-                                imageUrl: 'https://www.portotheme.com/html/porto/_9.8.0/img/team/team-6.jpg'
-                            }
-                        },
-                        state: {
-                            isExpanded: false,
-                            isExpanding: false,
-                            isChecked: false,
-                            isSelected: false,
-                            isEnabled: false,
-                            isIndeterminate: false
-                        },
-                        children: [
-                            
-                        ]
-                    }]
-                }]
-            }]
-        }];
-
-        let copy = Demo.copyDemoConfiguration(this.demos[0]);
-
-        copy.gridLines = false;
-
-        this.demos.push(copy);
-
-        this.state = {
-            demoConfiguration: Demo.copyDemoConfiguration(this.demos[0]),
-            selectedPage: 1
-        };
+                        children: [],
+                        properties: {
+                            hideChevronContainer: true
+                        }
+                    }
+                ],
+                properties: {
+                    hideChevronContainer: false,
+                    hideImage: true,
+                    hideCheckBox: true,
+                    nonInteractive: false,
+                    nonSelectable: true
+                }
+            }
+        ]
     }
 
+    /* Handles the demo changing via the navigation. */
+    async handleDemoChanged(nodeInformation: ITreeNodeInformation): Promise<any> {
+        if (window.innerWidth <= 1250) {
+            this.handleInformationActionClick(nodeInformation);
+        }
 
-    demos: IDemoConfiguration[];
+        let result = this.demoConfigurations.find((demoConfiguration) => demoConfiguration.id == nodeInformation.node.additionalData.demoId);
 
-    setDemo(demoConfiguration: IDemoConfiguration): void {
-        // this.setState({
-        //     demoConfiguration: Demo.copyDemoConfiguration(demoConfiguration)
-        // });
+        if (result != null) {
+            this.setState({
+                demoConfiguration: result
+            });
+        } else {
+            this.setState({
+                demoConfiguration: null
+            });
+        }
+
+        this.setState({
+            selectedPage: 1
+        });
+    }
+    
+    /* Handles when the information action is clicked. */
+    handleInformationActionClick(nodeInformation: ITreeNodeInformation): void {      
+        let result = this.demoConfigurations.find((demoConfiguration) => demoConfiguration.id == nodeInformation.node.additionalData.demoId);
+        
+        if (result != null) {
+            this.setState({
+                informationModalVisible: true,
+                informationModalTitle: result.name,
+                informationModalHelpContent: result.helpContent
+            });
+        }
+    }
+    
+    /* Handles closing the information modal. */
+    handleInformationModalClose(): void {
+        this.setState({
+            informationModalVisible: false,
+            informationModalTitle: "",
+            informationModalHelpContent: <></>
+        });
     }
 
     static copyDemoConfiguration(demoConfiguration: IDemoConfiguration): IDemoConfiguration {
         return {
             id: demoConfiguration.id,
+            name: demoConfiguration.name,
                 
             // Appearance
             elementOuterPadding: demoConfiguration.elementOuterPadding,
@@ -578,6 +339,7 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
             showActions: demoConfiguration.showActions,
             indent: demoConfiguration.indent,
             gridLines: demoConfiguration.gridLines,
+            overlay: demoConfiguration.overlay,
 
             // Behavior
             useWaitCursor: demoConfiguration.useWaitCursor,
@@ -589,24 +351,36 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
             autoCheck: demoConfiguration.autoCheck,
 
             // Data
-            data: demoConfiguration.data
+            data: demoConfiguration.data,
+
+            // Events
+            onLoadDemo: demoConfiguration.onLoadDemo,
+            onBeforeNodeExpand: demoConfiguration.onBeforeNodeExpand,
+            onAfterNodeExpand: demoConfiguration.onAfterNodeExpand,
+            onBeforeNodeSelect: demoConfiguration.onBeforeNodeSelect,
+            onAfterNodeSelect: demoConfiguration.onAfterNodeSelect,
+
+            // Children
+            imageElement: demoConfiguration.imageElement,
+            contentElement: demoConfiguration.contentElement,
+            actionsElement: demoConfiguration.actionsElement
         }
     }
 
     getSplitter(): JSX.Element {
         return (
-            <div className={ `splitter` }>
+            // <div className={ `splitter` }>
 
-                <div className={` splitter-line `}>
+            //     <div className={` splitter-line `}>
 
-                </div>
+            //     </div>
 
-            </div>
+            // </div>
+            <></>
         )
     }
 
     onEditorUpdate(demoConfiguration: IDemoConfiguration): void {
-        console.log(demoConfiguration);
         if (demoConfiguration != null) {
             this.setState({
                 demoConfiguration: demoConfiguration
@@ -614,51 +388,63 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
         }
     }
 
-    render() {
-        
+    render() {        
 
         return (
             <div>
+            <Modal isVisible={this.state.informationModalVisible} onClose={this.handleInformationModalClose}>
+                <>
+                    <section className={'title'}>
+                        <h1>
+                            { this.state.informationModalTitle } Information & Help
+                        </h1>
+                        <div className={'close-button-container'}>
+                            <div className={'close-button'} onClick={this.handleInformationModalClose}>
+                                ✖
+                            </div>
+                        </div>
+                    </section>
+                    <section className={'main'}>
+                        { this.state.informationModalHelpContent != null && this.state.informationModalHelpContent}
+                    </section>
+                    <footer>
+                        
+                    </footer>
+                </>
+            </Modal>
 
-                <div className={ `view-port` }>
+
+                <div className={ `view-port auto-dark-mode` }>
 
                     <div className={ `editor-navigation` }>
                         <h1>
                             Alpha Build - ReactJS Nested List & Tree View Demo
                         </h1>
-                        This demo app works best on a desktop browser due to screen size.
+                        <a href="https://github.com/jamiehighfield/react-tree-view"><img src="https://github.com/jamiehighfield/react-tree-view/actions/workflows/node.js.yml/badge.svg"></img></a>
                     </div>
 
                     <div className={ `editor ${this.state.selectedPage == 0 ? ' sel-page-0' : ''} ${this.state.selectedPage == 1 ? ' sel-page-1' : ''} ${this.state.selectedPage == 2 ? ' sel-page-2' : ''} ${this.state.selectedPage == 3 ? ' sel-page-3' : ''}` }>
 
-                        <div className={ `navigation` }>
-                            
-                            <DemoNavigation></DemoNavigation>
-
+                        <div className={ `panel navigation` }>                            
+                            <DemoNavigation navigationItems={this.state.navigationItems} onBeforeDemoConfigurationChanged={async (nodeInformation) => await this.handleDemoChanged(nodeInformation)} onDemoInformationActionClicked={this.handleInformationActionClick}></DemoNavigation>
                         </div>
 
                         { this.getSplitter() }
 
-                        <div className={ `tree-view` }>
-
+                        <div className={ `panel tree-view` }>
                             <DemoTreeView demoConfiguration={this.state.demoConfiguration}></DemoTreeView>
-
                         </div>
 
                         { this.getSplitter() }
 
-                        <div className={ `appearance` }>
-
+                        <div className={ `panel appearance` }>
                             <DemoEditor demoConfiguration={this.state.demoConfiguration} onUpdate={this.onEditorUpdate}></DemoEditor>
-
                         </div>
 
                         { this.getSplitter() }
 
-                        <div className={ `json-viewer` }>
-                            
+                        <div className={ `panel json-viewer` }>                            
                             <JsonViewer value={this.state.demoConfiguration.data}></JsonViewer>
-
                         </div>
 
                     </div>
@@ -666,14 +452,15 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                 </div>
 
                 <div className={ `editor-mobile-navigation` }>
-                    {/* <div className={ `icon ${this.state.selectedPage == 0 ? ' selected' : ''}`} onClick={() => this.setState({
+                    
+                    <div className={ `icon ${this.state.selectedPage == 0 ? ' selected' : ''}`} onClick={() => this.setState({
                         selectedPage: 0
                     })}>
-                        <i className={ `fa fa-lg fa-list-ul ` } aria-hidden="true"></i>
+                        <i className={ `fa fa-lg fa-home ` } aria-hidden="true"></i>
                         <p>
-                            Demos
+                            Home
                         </p>
-                    </div> */}
+                    </div>
                     <div className={ `icon ${this.state.selectedPage == 1 ? ' selected' : ''}`} onClick={() => this.setState({
                         selectedPage: 1
                     })}>
@@ -698,6 +485,14 @@ export class Demo extends React.Component<IDemoComponentProps, IDemoComponentSta
                             JSON
                         </p>
                     </div>
+                    {/* <div className={ `icon ${this.state.selectedPage == 3 ? ' selected' : ''}`} onClick={() => this.setState({
+                        selectedPage: 3
+                    })}>
+                        <i className={ `fa fa-lg fa-cogs ` } aria-hidden="true"></i>
+                        <p>
+                            Settings
+                        </p>
+                    </div> */}
                 </div>
             </div>
         );

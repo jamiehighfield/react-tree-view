@@ -119,7 +119,7 @@
     color: rgba(255, 255, 255, 0);
     /* opacity: 0.3; */
     padding: 2px;
-    padding-right: 5px;
+    /* padding-right: 5px; */
   }
   .tree-viewc > div {
     color: initial;
@@ -406,4 +406,103 @@ input[type="text"]:focus, input[type="number"]:focus {
   border-color: #1d89cf;
   outline: 0;
   box-shadow: none;
+}
+
+:root {
+  --color-demo-primary-text: #000000;
+  --color-demo-background: #FFFFFF;
+  --color-demo-node-text: #000000;
+  --color-demo-node-sub-text: #7E7E7E;
+  --color-demo-divider: #F3F3F3;
+
+  --color-background: #FFFFFF;
+  --color-hover: #F8F8F8;
+  --color-selected: #EFEDED;
+  --color-selected-border: #E5E2E2;
+  --color-grid-lines: #EDEDED;
+
+  --color-modal-border: #B3B3B3;
+  --color-modal-divider: #E5E5E5;
+  --color-modal-background: #F7F7F7;
+}
+
+@media (prefers-color-scheme: dark) {
+  .auto-dark-mode {
+    --color-demo-primary-text: #FFFFFF;
+    --color-demo-background: #202124;
+    --color-demo-node-text: #FFFFFF;
+    --color-demo-node-sub-text: #898989;
+    --color-demo-divider: #383838;
+    
+    --color-background: #202124;
+    --color-hover: #2C2C2C;
+    --color-selected: #343434;
+    --color-selected-border: #323030;
+    --color-grid-lines: #242424;
+
+    --color-modal-border: #3E3E3E;
+    --color-modal-divider: #323232;
+    --color-modal-background: #212121;
+  }
+}
+
+.reset-cursor *, .reset-cursor *:hover {
+  cursor: default !important;
+}
+
+.tree-viewc.non-interactive * {
+  pointer-events: none;
+}
+
+.tag {
+  border: 1px solid #1D89CF;
+  padding: 3px;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #1D89CF;
+  font-size: 12px;
+  line-height: 11px;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.tag:last-of-type {
+  margin-right: 0;
+}
+
+section, footer {
+  padding: 20px;
+  color: var(--color-demo-primary-text);
+}
+
+section.title {
+  display: flex;
+  border-bottom: 1px solid var(--color-modal-divider);
+}
+section.title > h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: normal;
+  flex-grow: 1;
+}
+section.title > div.close-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+section.title > div.close-button-container > .close-button {
+  width: 18px;
+  height: 18px;
+  color: #C7C7C7;
+  cursor: pointer;
+  transition: color 0.1s linear;
+}
+section.title > div.close-button-container:hover > .close-button {
+  color: #979797;
+}
+section.main {
+  flex-grow: 1;
+}
+footer {
+  border-top: 1px solid var(--color-modal-divider);
 }

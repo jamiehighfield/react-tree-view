@@ -24,6 +24,8 @@ export interface ITreeViewProps {
     showActions?: boolean;
     indent?: number;
     gridLines?: boolean;
+    overlay?: boolean;
+    overlayScrollBar: boolean;
 
     // Behavior
     useWaitCursor?: boolean;
@@ -33,6 +35,8 @@ export interface ITreeViewProps {
     autoHideActions?: boolean;
     showActionsOnNodeHover?: boolean;
     autoCheck?: boolean;
+    dragSelection?: boolean;
+    disableDeselection?: boolean;
 
     // Data
     data: ITreeNodeInformation[];
@@ -40,7 +44,10 @@ export interface ITreeViewProps {
     // Events
     onDataChange?: DataChangeDelegate;
     onBeforeNodeExpand?: BeforeNodeExpandDelegate;
-    onAfterNodeExpanded?: AfterNodeExpandedDelegate;
+    onAfterNodeExpand?: AfterNodeExpandedDelegate;
+
+    onBeforeNodeSelect?: NodeSelectDelegate;
+    onAfterNodeSelect?: NodeSelectDelegate;
 
 
 
@@ -71,4 +78,10 @@ export enum ClickBehavior {
 
 export interface DataChangeDelegate {
     (data: any): void;
+}
+
+
+
+export interface NodeSelectDelegate {
+    (nodeInformation: ITreeNodeInformation): Promise<any>
 }

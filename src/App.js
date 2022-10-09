@@ -141,7 +141,7 @@ isIndeterminate: false
 	}]);
 
 	return (
-		<div className="App" style={{display:'flex',height:'100vh'}}>
+		<div className="App" style={{height:'100vh'}}>
 			<style>
 				@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 			</style>
